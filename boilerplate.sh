@@ -44,7 +44,7 @@ main() {
   echo ''
   echo 'EZADMIN are not responsible for any loss of data.'
   echo ''
-  echo 'p.s. Please report any bugs to http://bugs.ezadm.in.'
+  echo 'P.S. Please report any bugs to http://bugs.ezadm.in.'
   echo ''
   printf "${NORMAL}"
 
