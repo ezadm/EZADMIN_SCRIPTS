@@ -49,8 +49,8 @@ main() {
   printf "${NORMAL}"
 
   printf "{$RED}"
-  read -r -p "Are you sure you have backups and wish to install MySQL? [y/N] " response
-  if [[ $response =~ ^[yes|y]$ ]]; then
+  read -p "Are you sure you have backups and wish to install MySQL? [y/N] " response
+  if [[ $response =~ ^[Yy]$ ]]; then
       echo 'Just detecting your OS, one moment please...'
       if [ -e /etc/redhat-release ]; then
         export distro="Redhat/CentOS"
