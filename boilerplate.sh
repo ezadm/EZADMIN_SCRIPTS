@@ -27,6 +27,7 @@ main() {
   # which may fail on systems lacking tput or terminfo
   set -e
 
+  clear
   #Welcome Message
   printf "${GREEN}"
   echo '  _______  _______  _______  ______   _______    _________ _       '
@@ -47,7 +48,7 @@ main() {
   echo ''
   printf "${NORMAL}"
 
-  printf "{$BLUE}"
+  printf "{$RED}"
   read -r -p "Are you sure you have backups and wish to run this script? [y/N] " response
   if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
   then
