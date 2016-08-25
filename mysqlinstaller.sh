@@ -50,8 +50,7 @@ main() {
 
   printf "{$RED}"
   read -r -p "Are you sure you have backups and wish to install MySQL? [y/N] " response
-  if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]] 
-    then
+  if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]; then
       echo 'Just detecting your OS, one moment please...'
       if [ "$(uname)" == "Ubuntu" ]; then
         echo 'Your OS is Ubuntu'
