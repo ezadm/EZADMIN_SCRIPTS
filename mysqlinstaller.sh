@@ -55,6 +55,8 @@ main() {
       if [ -e /etc/redhat-release ]; then
         export distro="Redhat/CentOS"
         echo 'Your OS is Redhat/CentOS'
+      elif [ "$(uname -a | awk '{print $6}')" == "Debian" ]; then
+        echo 'Your OS is Debian'
       elif [ "$(lsb_release -d | awk '{print $2}')" == "Ubuntu" ]; then
         export distro="Ubuntu"
         echo 'Your OS is Ubuntu'
