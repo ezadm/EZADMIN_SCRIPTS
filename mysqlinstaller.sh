@@ -52,13 +52,12 @@ main() {
   read -r -p "Are you sure you have backups and wish to install MySQL? [y/N] " response
   if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]; then
       echo 'Just detecting your OS, one moment please...'
-      if [ "$(uname)" == "Ubuntu" ]; then
+      if [ -e /etc/redhat-release ]; then
+        export distro="Redhat/CentOS"
+        echo 'Your OS is Redhat/CentOS'
+      elif [ "$(lsb_release -d | awk '{print $2}')" == "Ubuntu" ]; then
+        export distro="Ubuntu"
         echo 'Your OS is Ubuntu'
-      # Do something under Mac OS X platform        
-      elif [ "$(expr substr $(uname -s) 1 5)" == "CentOS" ]; then
-        echo 'Your OS is CentOS'
-      elif [ "$(expr substr $(uname -s) 1 5)" == "Debian" ]; then
-        echo 'Your OS is Debian'
       else
         echo 'Sorry you are on an unsupported OS'
       fi 
