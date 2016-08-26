@@ -54,12 +54,48 @@ main() {
       echo 'Just detecting your OS, one moment please...'
       if [ -e /etc/redhat-release ]; then
         export distro="Redhat/CentOS"
-        echo 'Your OS is Redhat/CentOS'
+        clear
+         printf "{$GREEN}"
+        echo '                                    _____                  '        
+        echo '                     _.+sd$$$$$$$$$bs+._                   '
+        echo '                 .+d$$$$$$$$$$$$$$$$$$$$$b+.               '
+        echo '              .sd$$$$$$$P^*^T$$$P^*"*^T$$$$$bs.            '
+        echo '            .s$$$$$$$$P*     `*' _._  `T$$$$$$$s.          '
+        echo '          .s$$$$$$$$$P          ` :$;   T$$$$$$$$s.        '
+        echo '         s$$$$$$$$$$;  db..+s.   `**'    T$$$$$$$$$s       '
+        echo '       .$$$$$$$$$$$$'  `T$P*'             T$$$$$$$$$$.     '
+        echo '      .$$$$$$$$$$$$P                       T$$$$$$$$$$.    '
+        echo '     .$$$$$$$$$$$$$b                       `$$$$$$$$$$$.   '
+        echo '    :$$$$$$$$$$$$$$$.                       T$$$$$$$$$$$;  '
+        echo '    $$$$$$$$$P^*' :$$b.                     d$$$$$$$$$$$$  '
+        echo '   :$$$$$$$P'      T$$$$bs._               :P'`*^T$$$$$$$; '
+        echo '   $$$$$$$P         `*T$$$$$b              '      `T$$$$$$ '
+        echo '  :$$$$$$$b            `*T$$$s                      :$$$$$;'
+        echo '  :$$$$$$$$b.                                        $$$$$;'
+        echo '  $$$$$$$$$$$b.                                     :$$$$$$'
+        echo '  $$$$$$$$$$$$$bs.                                 .$$$$$$$'
+        echo '  $$$$$$$$$$$$$$$$$bs.                           .d$$$$$$$$'
+        echo '  :$$$$$$$$$$$$$P*"*T$$bs,._                  .sd$$$$$$$$$;'
+        echo '  :$$$$$$$$$$$$P     TP^**T$bss++.._____..++sd$$$$$$$$$$$$;'
+        echo '   $$$$$$$$$$$$b           `T$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ '
+        echo '   :$$$$$$$$$$$$b.           `*T$$P^*"*"*^^*T$$$$$$$$$$$$; '
+        echo '    $$$b       `T$b+                        :$$$$$$$BUG$$  '
+        echo '    :$P'         `"'               ,._.     ;$$$$$$$$$$$;  '
+        echo '     \                            `*TP*     d$$P*******$   '
+        echo '      \                                    :$$P'      /    '
+        echo '       \                                  :dP'       /     '
+        echo '        `.                               d$P       .'      '
+        echo '          `.                             `'      .'        '
+        echo '            `-.                               .-'          '
+        echo '               `-.                         .-'             '
+        echo '                  `*+-._             _.-+*'                '
+        echo '                        `"*-------*"'                  '
+        echo '                  Your OS is Redhat/CentOS'
       elif [ "$(uname -a | awk '{print $6}')" == "Debian" ]; then
         echo 'Your OS is Debian'
       elif [ "$(lsb_release -d | awk '{print $2}')" == "Ubuntu" ]; then
         export distro="Ubuntu"
-        echo 'Your OS is Ubuntu'
+        echo 'Your OS is Ubuntu'git
       else
         echo 'Sorry you are on an unsupported OS'
       fi 
