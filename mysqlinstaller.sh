@@ -62,12 +62,14 @@ main() {
       elif [ "$(lsb_release -d | awk '{print $2}')" == "Ubuntu" ]; then
         export distro="Ubuntu"
         echo 'Your OS is Ubuntu'git
+      elif uname == "Windows"; then
+        echo 'cunt'
       else
         echo 'Sorry you are on an unsupported OS'
-      fi 
+       fi 
   else
       echo 'exiting EzAdmin Script. Remember to visit http://www.ezadm.in for more scripts'
-  fi                                        
+  fi                        
   printf "${NORMAL}"                                                                
 
 }
