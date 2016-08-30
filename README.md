@@ -1,3 +1,3 @@
 ![Logo](http://i.imgur.com/qhkeB7K.png "Logo")
 
-#Script Repo for ezadm.in
+###Script Repo for https://www.ezadm.in
