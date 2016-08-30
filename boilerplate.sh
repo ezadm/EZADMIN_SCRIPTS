@@ -1,4 +1,5 @@
-init_colours() {#{{{
+#!/bin/bash
+init_colours() { #{{{
     # Use colors, but only if connected to a terminal, and that terminal
     # supports them.
     if which tput >/dev/null 2>&1; then
@@ -23,8 +24,8 @@ init_colours() {#{{{
     # Only enable exit-on-error after the non-critical colorization stuff,
     # which may fail on systems lacking tput or terminfo
     set -e
-}#}}}
-show_ezadmin_header()#{{{
+} #}}}
+show_ezadmin_header() #{{{
 {
   #Welcome Message
   printf "${GREEN}"
@@ -45,41 +46,67 @@ show_ezadmin_header()#{{{
   echo 'p.s. Please report any bugs to http://bugs.ezadm.in.'
   echo ''
   printf "${NORMAL}"
-}#}}}
-ezadmin_detect_distro()#{{{
+} #}}}
+ezadmin_detect_distro() #{{{
 {
-        EZADMIN_OS="UNKNOWN"
-        EZADMIN_DISTRO="UNKNOWN"
-        EZADMIN_DISTRO_VERSION="UNKNOWN"
+        export EZADMIN_OS='Unknown'
+        export EZADMIN_DISTRIB_ID='Unknown'
+        export EZADMIN_DISTRIB_RELEASE='Unknown'
+        export EZADMIN_DISTRIB_CODENAME='Unknown'
+        export EZADMIN_DISTRIB_DESCRIPTION='Unknown'
 
         echo 'Just detecting your OS and Distro, one moment please...'
-        if [ -e /etc/centos-release ]; then
-                export EZADMIN_OS='Linux'
-                export EZADMIN_DISTRO='Centos'
-                export EZADMIN_DISTRO_VERSION=`cat /etc/centos-release | sed 's/CentOS Linux release //g' | sed 's/(Core)//g'`
-        elif [ -e /etc/debian-version ]; then
-                export EZADMIN_OS='Linux'
-                export EZADMIN_DISTRO='Debian'
-                export EZADMIN_DISTRO_VERSION=`cat /etc/debian-version`
-        elif [ "$(lsb_release -d | awk '{print $2}')" == "Ubuntu" ]; then
-                export distro="Ubuntu"
-                echo 'Your OS is Ubuntu'git
-        elif uname == "Windows"; then
-                echo 'cunt'
-        else
-                echo 'Sorry you are on an unsupported OS'
+        if [ -e /etc/os-release ]; then
+            export EZADMIN_OS='Linux'
+            eval `cat /etc/os-release | sed 's/^/export EZADMIN_/g'`
         fi
-}#}}}
-ezadmin_display_distro()#{{{
+#        if [ -e /etc/centos-release ]; then
+#            export EZADMIN_OS='Linux'
+#            export EZADMIN_DISTRIB_ID='Centos'
+#            export EZADMIN_DISTRIB_RELEASE=`cat /etc/centos-release | sed 's/CentOS Linux release //g' | sed 's/(Core)//g'`
+#            export EZADMIN_DISTRIB_CODENAME='Centos'
+#            export EZADMIN_DISTRIB_DESCRIPTION="Linux - Centos $EZADMIN_DISTRIB_RELEASE"
+#        elif [ -e /etc/lsb-release ]; then
+#            eval `cat /etc/lsb-release | sed 's/^/export EZADMIN_/g'`
+#        elif [ -e /etc/debian-version ]; then
+#            export EZADMIN_OS='Linux'
+#            export EZADMIN_DISTRIB_ID='Debian'
+#            export EZADMIN_DISTRIB_RELEASE=`cat /etc/debian-version`
+#            export EZADMIN_DISTRIB_CODENAME='Unknown'
+#            export EZADMIN_DISTRIB_DESCRIPTION='Unknown'
+#        elif uname == "Windows"; then
+#            echo "Win"
+#        else
+#                echo 'Sorry you are on an unsupported OS'
+#        fi
+} #}}}
+ezadmin_display_distro() #{{{
 {
         echo "Operating System: $EZADMIN_OS"
-        echo "Distro: $EZADMIN_DISTRO"
-        echo "Distro version: $EZADMIN_DISTRO_VERSION"
-}#}}}
+        echo "Distro: $EZADMIN_ID"
+        echo "Distro version: $EZADMIN_VERSION_ID"
+        echo "Distro human readable: $EZADMIN_NAME"
+        echo "Distro version human readable: $EZADMIN_PRETTY_NAME"
+} #}}}
+ezadmin_init() #{{{
+{
+    init_colours
+    show_ezadmin_header
+    ezadmin_detect_distro
+
+    if [ "$EZADMIN_ID" == "debian" ] || "$EZADMIN_ID" == "ubuntu" ]; then
+        export EZADMIN_PKG_INSTALL="apt-get install -y"
+    elif [ "$EZADMIN_ID" == "centos" ]; then
+        export EZADMIN_PKG_INSTALL="yum install -y"
+    elif [ "$EZADMIN_ID" == "arch" ]; then
+        export EZADMIN_PKG_INSTALL="pacman -S --noconfirm"
+    fi
+} #}}}
 
 clear
-init_colours
-show_ezadmin_header
-ezadmin_detect_distro
+ezadmin_init
 ezadmin_display_distro
 
+declare -A HTOP_PACKAGE=( ["centos"]="" ["ubuntu"]="htop" ["debian"]="htop" ["arch"]="htop")
+
+echo "$EZADMIN_PKG_INSTALL ${HTOP_PACKAGE[$EZADMIN_ID]}"
