@@ -102,10 +102,26 @@ ezadmin_init() #{{{
         export EZADMIN_PKG_INSTALL="pacman -S --noconfirm"
     fi
 } #}}}
+ezadmin_user_check_backups() #{{{
+{
+    echo "=========== WARNING ==========="
+    echo "Before you use any script from ezadm.in you should ensure that you have a recent working backup of your server."
+    echo "Do you have a working backup? (Type 'YES I HAVE A WORKING BACKUP')"
+    read WORKINGBACKUP
+
+    if [ "$WORKINGBACKUP" != "YES I HAVE A WORKING BACKUP" ] && [ "$WORKINGBACKUP" != "Q" ]; then
+        echo "Please enter: 'YES I HAVE A WORKING BACKUP' or 'Q' if you want to quit"
+        ezadmin_user_check_backups
+    elif [ "$WORKINGBACKUP" == "Q" ]; then
+        exit
+    fi
+} #}}}
 
 clear
 ezadmin_init
 ezadmin_display_distro
+
+ezadmin_user_check_backups
 
 declare -A HTOP_PACKAGE=( ["centos"]="" ["ubuntu"]="htop" ["debian"]="htop" ["arch"]="htop")
 
