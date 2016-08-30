@@ -1,2 +1,3 @@
-# EZADMIN_SCRIPTS
-# EZADMIN_SCRIPTS
+![Logo](http://i.imgur.com/qhkeB7K.png "Logo")
+
+#Script Repo for ezadm.in
