@@ -1,7 +1,7 @@
 # ezadm.in bash script boilerplate.
 
 main() {
-  
+
   # Use colors, but only if connected to a terminal, and that terminal
   # supports them.
   if which tput >/dev/null 2>&1; then
@@ -22,7 +22,7 @@ main() {
     BOLD=""
     NORMAL=""
   fi
-  
+
   # Only enable exit-on-error after the non-critical colorization stuff,
   # which may fail on systems lacking tput or terminfo
   set -e
@@ -37,7 +37,7 @@ main() {
   echo '|  __)      /   / |  ___  || |   | || |(_)| |      | |   | (\ \) |'
   echo '| (        /   /  | (   ) || |   ) || |   | |      | |   | | \   |'
   echo '| (____/\ /   (_/\| )   ( || (__/  )| )   ( | _ ___) (___| )  \  |'
-  echo '(_______/(_______/|/     \|(______/ |/     \|(_)\_______/|/    )_)' 
+  echo '(_______/(_______/|/     \|(______/ |/     \|(_)\_______/|/    )_)'
   echo ''
   echo ''
   echo 'Please ensure full backups have been taken prior to running this script.'
@@ -66,11 +66,11 @@ main() {
         echo 'cunt'
       else
         echo 'Sorry you are on an unsupported OS'
-       fi 
+       fi
   else
       echo 'exiting EzAdmin Script. Remember to visit http://www.ezadm.in for more scripts'
-  fi                        
-  printf "${NORMAL}"                                                                
+  fi
+  printf "${NORMAL}"
 
 }
 main
