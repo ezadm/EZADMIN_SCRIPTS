@@ -94,7 +94,7 @@ ezadmin_init() #{{{
     show_ezadmin_header
     ezadmin_detect_distro
 
-    if [ "$EZADMIN_ID" == "debian" ] || "$EZADMIN_ID" == "ubuntu" ]; then
+    if [ "$EZADMIN_ID" == "debian" ] || [ "$EZADMIN_ID" == "ubuntu" ]; then
         export EZADMIN_PKG_INSTALL="apt-get install -y"
     elif [ "$EZADMIN_ID" == "centos" ]; then
         export EZADMIN_PKG_INSTALL="yum install -y"
