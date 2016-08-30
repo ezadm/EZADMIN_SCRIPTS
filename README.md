@@ -14,7 +14,7 @@ For instructions on how to setup and run the scripts, please refer to the specif
 
 ## Contributions
 
-Please submit all pull requests to [master](https://github.com/ezadm/EZADMIN_SCRIPTS/master) branch.
+Please submit all pull requests to the [master](https://github.com/ezadm/EZADMIN_SCRIPTS/master) branch.
 Please ensure that your pull request follows our boilerplate layout or it will not be accepted.
 
 
