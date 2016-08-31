@@ -116,7 +116,4 @@ ezadmin_user_check_backups() #{{{
 clear
 ezadmin_init
 ezadmin_display_distro
-
 ezadmin_user_check_backups
-
-###Start of Main Script###
