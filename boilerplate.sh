@@ -47,31 +47,29 @@ init_colours() { #{{{
     # which may fail on systems lacking tput or terminfo
     set -e
 } #}}}
-
-ezadmin_message()
+ezadmin_message() #{{{
 {
     MESSAGE=$1
     COLOUR=$2
     COLOUR_BG=$3
 
     echo -e "$COLOUR$COLOUR_BG$MESSAGE$COLOUR_FG_NC$COLOUR_BG_NC"
-}
-ezadmin_message_success()
+} #}}}
+ezadmin_message_success() #{{{
 {
     MESSAGE=$1
     echo -e "$COLOUR_FG_GREEN$MESSAGCOLOUR_FG_NC$COLOUR_BG_NC"
-}
-ezadmin_message_warning()
+} #}}}
+ezadmin_message_warning() #{{{
 {
     MESSAGE=$1
     echo -e "$COLOUR_FG_YELLOW$MESSAGCOLOUR_FG_NC$COLOUR_BG_NC"
-}
-ezadmin_message_error()
+} #}}}
+ezadmin_message_error() #{{{
 {
     MESSAGE=$1
     echo -e "$COLOUR_FG_RED$MESSAGCOLOUR_FG_NC$COLOUR_BG_NC"
-}
-
+} #}}}
 show_ezadmin_header() #{{{
 {
   #Welcome Message
