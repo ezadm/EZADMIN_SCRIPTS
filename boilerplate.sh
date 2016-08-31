@@ -6,7 +6,7 @@ init_colours() { #{{{
         ncolors=$(tput colors)
     fi
     if [ -t 1 ] && [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]; then
-        COLOURFGNC="\e[39m"
+        COLOUR_FG_NC="\e[39m"
         COLOUR_FG_BLACK="\e[30m"
         COLOUR_FG_RED="\e[31m"
         COLOUR_FG_GREEN="\e[32mG"
