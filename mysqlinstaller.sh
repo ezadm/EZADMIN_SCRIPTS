@@ -17,6 +17,6 @@ ezadmin_include() #{{{
 } #}}}
 ezadmin_include 'https://raw.githubusercontent.com/demon012/EZADMIN_SCRIPTS/master/boilerplate.sh'
 ###### END BOILERPLATE ########}}}
-ezadmin_include 'https://raw.githubusercontent.com/demon012/EZADMIN_SCRIPTS/master/incldues/mysql.sh'
+ezadmin_include 'https://raw.githubusercontent.com/demon012/EZADMIN_SCRIPTS/master/includes/mysql.sh'
 
 ezadmin_install_mysql
