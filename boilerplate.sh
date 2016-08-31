@@ -39,46 +39,31 @@ show_ezadmin_header() #{{{
   echo '(_______/(_______/|/     \|(______/ |/     \|(_)\_______/|/    )_)'
   echo ''
   echo ''
-  echo 'Please ensure full backups have been taken prior to running this script.'
+  echo 'By using this script you agree to the EZADM TOS.'
+  echo 'The Terms of Service can be found at https://www.exadm.in/tos'
   echo ''
-  echo 'EZADMIN are not responsible for any loss of data.'
+  echo 'EZADMIN are not responsible for any loss of data, it is down to the end user to ensure they have the relevant backups!.'
   echo ''
   echo 'p.s. Please report any bugs to http://bugs.ezadm.in.'
   echo ''
   printf "${NORMAL}"
 } #}}}
+
 ezadmin_detect_distro() #{{{
 {
+        printf "${RED}"
+        echo "=========== OS and Distribution Detected ==========="
+        printf "${NORMAL}"
         export EZADMIN_OS='Unknown'
         export EZADMIN_DISTRIB_ID='Unknown'
         export EZADMIN_DISTRIB_RELEASE='Unknown'
         export EZADMIN_DISTRIB_CODENAME='Unknown'
         export EZADMIN_DISTRIB_DESCRIPTION='Unknown'
 
-        echo 'Just detecting your OS and Distro, one moment please...'
         if [ -e /etc/os-release ]; then
             export EZADMIN_OS='Linux'
             eval `cat /etc/os-release | sed 's/^/export EZADMIN_/g'`
         fi
-#        if [ -e /etc/centos-release ]; then
-#            export EZADMIN_OS='Linux'
-#            export EZADMIN_DISTRIB_ID='Centos'
-#            export EZADMIN_DISTRIB_RELEASE=`cat /etc/centos-release | sed 's/CentOS Linux release //g' | sed 's/(Core)//g'`
-#            export EZADMIN_DISTRIB_CODENAME='Centos'
-#            export EZADMIN_DISTRIB_DESCRIPTION="Linux - Centos $EZADMIN_DISTRIB_RELEASE"
-#        elif [ -e /etc/lsb-release ]; then
-#            eval `cat /etc/lsb-release | sed 's/^/export EZADMIN_/g'`
-#        elif [ -e /etc/debian-version ]; then
-#            export EZADMIN_OS='Linux'
-#            export EZADMIN_DISTRIB_ID='Debian'
-#            export EZADMIN_DISTRIB_RELEASE=`cat /etc/debian-version`
-#            export EZADMIN_DISTRIB_CODENAME='Unknown'
-#            export EZADMIN_DISTRIB_DESCRIPTION='Unknown'
-#        elif uname == "Windows"; then
-#            echo "Win"
-#        else
-#                echo 'Sorry you are on an unsupported OS'
-#        fi
 } #}}}
 ezadmin_display_distro() #{{{
 {
@@ -87,6 +72,16 @@ ezadmin_display_distro() #{{{
         echo "Distro version: $EZADMIN_VERSION_ID"
         echo "Distro human readable: $EZADMIN_NAME"
         echo "Distro version human readable: $EZADMIN_PRETTY_NAME"
+        echo ""
+        echo "Is this your OS and Distribution? (Type 'YES' or 'NO' if you want to quit)"
+        read CORRECTOS
+
+        if [ "$CORRECTOS" != "YES" ] && [ "$CORRECTOS" != "NO" ]; then
+          echo "Please enter: 'YES' or 'NO' if you want to quit"
+          ezadmin_display_distro
+        elif [ "$CORRECTOS" == "NO" ]; then
+          exit
+        fi
 } #}}}
 ezadmin_init() #{{{
 {
@@ -104,9 +99,11 @@ ezadmin_init() #{{{
 } #}}}
 ezadmin_user_check_backups() #{{{
 {
+    printf "${RED}"
     echo "=========== WARNING ==========="
+    printf "${NORMAL}"
     echo "Before you use any script from ezadm.in you should ensure that you have a recent working backup of your server."
-    echo "Do you have a working backup? (Type 'YES I HAVE A WORKING BACKUP')"
+    echo "Do you have a working backup? (Type 'YES I HAVE A WORKING BACKUP' or 'Q' if you want to quit)"
     read WORKINGBACKUP
 
     if [ "$WORKINGBACKUP" != "YES I HAVE A WORKING BACKUP" ] && [ "$WORKINGBACKUP" != "Q" ]; then
@@ -123,6 +120,4 @@ ezadmin_display_distro
 
 ezadmin_user_check_backups
 
-declare -A HTOP_PACKAGE=( ["centos"]="" ["ubuntu"]="htop" ["debian"]="htop" ["arch"]="htop")
-
-echo "$EZADMIN_PKG_INSTALL ${HTOP_PACKAGE[$EZADMIN_ID]}"
+###Start of Main Script###
