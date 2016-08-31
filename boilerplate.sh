@@ -47,6 +47,77 @@ init_colours() { #{{{
     # which may fail on systems lacking tput or terminfo
     set -e
 } #}}}
+ezadmin_download() #{{{
+{
+    url="$1"
+    dest="$2"
+
+    if [ -x /usr/bin/curl ]; then
+        DOWNLOADCOMMAND="curl -L $url -o $dest"
+    elif [ -x /usr/bin/wget ]; then
+        DOWNLOADCOMMAND="wget $url -O $dest"
+    fi
+    echo "$DOWNLOADCOMMAND"
+    $DOWNLOADCOMMAND
+} #}}}
+ezadmin_packageman_list() #{{{
+{
+    break
+} #}}}
+ezadmin_packageman_install() #{{{
+{
+    PACKAGENAME="$1"
+
+    if [ "$EZADMIN_ID" == "debian" ] || [ "$EZADMIN_ID" == "ubuntu" ]; then
+        apt-get install -y "$PACKAGENAME"
+    elif [ "$EZADMIN_ID" == "centos" ]; then
+        yum install -y "$PACKAGENAME"
+    elif [ "$EZADMIN_ID" == "arch" ] || [ "$EZADMIN_ID" == "manjaro" ]; then
+        pacman -S --noconfirm "$PACKAGENAME"
+    fi
+} #}}}
+ezadmin_packageman_remove() #{{{
+{
+    PACKAGENAME="$1"
+
+    if [ "$EZADMIN_ID" == "debian" ] || [ "$EZADMIN_ID" == "ubuntu" ]; then
+        apt-get remove -y "$PACKAGENAME"
+    elif [ "$EZADMIN_ID" == "centos" ]; then
+        yum remove -y "$PACKAGENAME"
+    elif [ "$EZADMIN_ID" == "arch" ] || [ "$EZADMIN_ID" == "manjaro" ]; then
+        pacman -R --noconfirm "$PACKAGENAME"
+    fi
+} #}}}
+ezadmin_packageman_checkinstalled() #{{{
+{
+    PACKAGENAME="$1"
+
+    if [ "$EZADMIN_ID" == "debian" ] || [ "$EZADMIN_ID" == "ubuntu" ]; then
+        dpkg-query -l "$PACKAGENAME" 2>&1 > /dev/null
+
+        if [ $? -eq 0 ]; then
+            return true
+        else
+            return false
+        fi
+    elif [ "$EZADMIN_ID" == "centos" ]; then
+        rpm -qa "$PACKAGENAME" | grep "$PACKAGENAME"
+
+        if [ $? -eq 0 ]; then
+            return true
+        else
+            return false
+        fi
+    elif [ "$EZADMIN_ID" == "arch" ] || [ "$EZADMIN_ID" == "manjaro" ]; then
+        pacman -Qs "$PACKAGENAME" | grep "$PACKAGENAME"
+
+        if [ $? -eq 0 ]; then
+            return true
+        else
+            return false
+        fi
+    fi
+} #}}}
 ezadmin_message() #{{{
 {
     MESSAGE=$1
