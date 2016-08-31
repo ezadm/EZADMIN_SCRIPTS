@@ -6,46 +6,94 @@ init_colours() { #{{{
         ncolors=$(tput colors)
     fi
     if [ -t 1 ] && [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]; then
-        RED="$(tput setaf 1)"
-        GREEN="$(tput setaf 2)"
-        YELLOW="$(tput setaf 3)"
-        BLUE="$(tput setaf 4)"
-        BOLD="$(tput bold)"
-        NORMAL="$(tput sgr0)"
-    else
-        RED=""
-        GREEN=""
-        YELLOW=""
-        BLUE=""
-        BOLD=""
-        NORMAL=""
+        COLOURFGNC="\e[39m"
+        COLOUR_FG_BLACK="\e[30m"
+        COLOUR_FG_RED="\e[31m"
+        COLOUR_FG_GREEN="\e[32mG"
+        COLOUR_FG_YELLOW="\e[33m"
+        COLOUR_FG_BLUE="\e[34m"
+        COLOUR_FG_MAGENTA="\e[35m"
+        COLOUR_FG_CYAN="\e[36m"
+        COLOUR_FG_LIGHTGRAY="\e[37m"
+        COLOUR_FG_DARKGRAY="\e[90m"
+        COLOUR_FG_LIGHTRED="\e[91m"
+        COLOUR_FG_LIGHTGREEN="\e[92m"
+        COLOUR_FG_LIGHTYELLOW="\e[93m"
+        COLOUR_FG_LIGHTBLUE="\e[94m"
+        COLOUR_FG_LIGHTMAGENTA="\e[95m"
+        COLOUR_FG_LIGHTCYAN="\e[96m"
+        COLOUR_FG_WHITE="\e[97m"
+
+        COLOUR_BG_NC="\e[49m"
+        COLOUR_BG_BLACK="\e[40m"
+        COLOUR_BG_RED="\e[41m"
+        COLOUR_BG_GREEN="\e[42m"
+        COLOUR_BG_YELLOW="\e[43m"
+        COLOUR_BG_BLUE="\e[44m"
+        COLOUR_BG_MAGENTA="\e[45m"
+        COLOUR_BG_CYAN="\e[46m"
+        COLOUR_BG_LIGHTGRAY="\e[47m"
+        COLOUR_BG_DARKGRAY="\e[100m"
+        COLOUR_BG_LIGHTRED="\e[101m"
+        COLOUR_BG_LIGHTGREEN="\e[102m"
+        COLOUR_BG_LIGHTYELLOW="\e[103m"
+        COLOUR_BG_LIGHTBLUE="\e[104m"
+        COLOUR_BG_LIGHTMAGENTA="\e[105m"
+        COLOUR_BG_LIGHTCYAN="\e[106m"
+        COLOUR_BG_WHITE="\e[107m"
     fi
 
     # Only enable exit-on-error after the non-critical colorization stuff,
     # which may fail on systems lacking tput or terminfo
     set -e
 } #}}}
+
+ezadmin_message()
+{
+    MESSAGE=$1
+    COLOUR=$2
+    COLOUR_BG=$3
+
+    echo -e "$COLOUR$COLOUR_BG$MESSAGE$COLOUR_FG_NC$COLOUR_BG_NC"
+}
+ezadmin_message_success()
+{
+    MESSAGE=$1
+    echo -e "$COLOUR_FG_GREEN$MESSAGCOLOUR_FG_NC$COLOUR_BG_NC"
+}
+ezadmin_message_warning()
+{
+    MESSAGE=$1
+    echo -e "$COLOUR_FG_YELLOW$MESSAGCOLOUR_FG_NC$COLOUR_BG_NC"
+}
+ezadmin_message_error()
+{
+    MESSAGE=$1
+    echo -e "$COLOUR_FG_RED$MESSAGCOLOUR_FG_NC$COLOUR_BG_NC"
+}
+
 show_ezadmin_header() #{{{
 {
   #Welcome Message
-  printf "${GREEN}"
-  echo '  _______  _______  _______  ______   _______    _________ _       '
-  echo '(  ____ \/ ___   )(  ___  )(  __  \ (       )   \__   __/( (    /|'
-  echo '| (    \/\/   )  || (   ) || (  \  )| () () |      ) (   |  \  ( |'
-  echo '| (__        /   )| (___) || |   ) || || || |      | |   |   \ | |'
-  echo '|  __)      /   / |  ___  || |   | || |(_)| |      | |   | (\ \) |'
-  echo '| (        /   /  | (   ) || |   ) || |   | |      | |   | | \   |'
-  echo '| (____/\ /   (_/\| )   ( || (__/  )| )   ( | _ ___) (___| )  \  |'
-  echo '(_______/(_______/|/     \|(______/ |/     \|(_)\_______/|/    )_)'
-  echo ''
-  echo ''
-  echo 'Please ensure full backups have been taken prior to running this script.'
-  echo ''
-  echo 'EZADMIN are not responsible for any loss of data.'
-  echo ''
-  echo 'p.s. Please report any bugs to http://bugs.ezadm.in.'
-  echo ''
-  printf "${NORMAL}"
+  read -r -d '' HEADER <<'EOF'
+  _______  _______  _______  ______   _______    _________ _
+(  ____ \/ ___   )(  ___  )(  __  \ (       )   \__   __/( (    /|
+| (    \/\/   )  || (   ) || (  \  )| () () |      ) (   |  \  ( |
+| (__        /   )| (___) || |   ) || || || |      | |   |   \ | |
+|  __)      /   / |  ___  || |   | || |(_)| |      | |   | (\ \) |
+| (        /   /  | (   ) || |   ) || |   | |      | |   | | \   |
+| (____/\ /   (_/\| )   ( || (__/  )| )   ( | _ ___) (___| )  \  |
+(_______/(_______/|/     \|(______/ |/     \|(_)\_______/|/    )_)
+'
+'
+Please ensure full backups have been taken prior to running this script.
+
+EZADMIN are not responsible for any loss of data.
+
+p.s. Please report any bugs to http://bugs.ezadm.in.
+EOF
+    ezadmin_message "$HEADER" "$COLOUR_FG_GREEN""
+
 } #}}}
 ezadmin_detect_distro() #{{{
 {
