@@ -1,4 +1,4 @@
-ezadmin_install_mysql()
+ezadmin_install_mysql() #{{{
 {
     # Set package names per distro
     declare -A MYSQL_PACKAGE=( ["centos"]="mysql-server" ["ubuntu"]="mysql-server" ["debian"]="mysql-server" )
@@ -37,4 +37,34 @@ ezadmin_install_mysql()
     # Install Mysql package
     echo "Installing mysql with command: $EZADMIN_PKG_INSTALL ${MYSQL_PACKAGE[$EZADMIN_ID]}"
     $EZADMIN_PKG_INSTALL ${MYSQL_PACKAGE[$EZADMIN_ID]}
-}
+    if [ $? -eq 0 ]; then
+        ezadmin_message_success "MySQL is now installed."
+    else
+        ezadmin_message_error "MySQL failed to install."
+        exit
+    fi
+} #}}}
+
+ezadmin_configure_mysql() #{{{
+{
+    while true; do
+        ezadmin_message "Do you want to install change your MySQL password? (y/n)"
+        read CHANGEPASS
+
+        if [ "${CHANGEPASS,,}" == "y" ]; then
+            # centos
+            # debian
+
+            # ubuntu
+            # if [ "$EZADMIN_DISTRIB_RELEASE" == "ubuntu" ]; then
+            #     dpkg-reconfigure mysql-server
+            # fi
+            # arch
+            break
+        elif [ "${CHANGEPASS,,}" == "n" ];
+            break
+        else
+            ezadmin_message "Unexpected input: \'$CHANGEPASS\' please enter (y or n)"
+        fi
+    done
+} #}}}
