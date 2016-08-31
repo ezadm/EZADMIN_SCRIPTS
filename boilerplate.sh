@@ -92,7 +92,7 @@ EZADMIN are not responsible for any loss of data.
 
 p.s. Please report any bugs to http://bugs.ezadm.in.
 EOF
-    ezadmin_message "$HEADER" "$COLOUR_FG_GREEN""
+    ezadmin_message "$HEADER" "$COLOUR_FG_GREEN"
 
 } #}}}
 ezadmin_detect_distro() #{{{
