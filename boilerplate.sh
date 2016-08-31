@@ -42,7 +42,7 @@ show_ezadmin_header() #{{{
   echo 'By using this script you agree to the EZADM.IN TOS.'
   echo 'The Terms of Service can be found at https://www.exadm.in/tos'
   echo ''
-  echo 'p.s. Please report any bugs to http://bugs.ezadm.in.'
+  echo 'p.s. Please report any bugs to https://bugs.ezadm.in.'
   echo ''
   printf "${NORMAL}"
 } #}}}
