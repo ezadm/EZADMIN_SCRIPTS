@@ -61,7 +61,7 @@ ezadmin_configure_mysql() #{{{
             # fi
             # arch
             break
-        elif [ "${CHANGEPASS,,}" == "n" ];
+        elif [ "${CHANGEPASS,,}" == "n" ]; then
             break
         else
             ezadmin_message "Unexpected input: \'$CHANGEPASS\' please enter (y or n)"
