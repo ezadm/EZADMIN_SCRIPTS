@@ -120,9 +120,4 @@ ezadmin_user_check_backups() #{{{
 clear
 ezadmin_init
 ezadmin_display_distro
-
 ezadmin_user_check_backups
-
-declare -A HTOP_PACKAGE=( ["centos"]="" ["ubuntu"]="htop" ["debian"]="htop" ["arch"]="htop")
-
-echo "$EZADMIN_PKG_INSTALL ${HTOP_PACKAGE[$EZADMIN_ID]}"
