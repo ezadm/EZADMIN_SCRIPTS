@@ -20,3 +20,4 @@ ezadmin_include 'https://raw.githubusercontent.com/demon012/EZADMIN_SCRIPTS/mast
 ezadmin_include 'https://raw.githubusercontent.com/demon012/EZADMIN_SCRIPTS/master/includes/mysql.sh'
 
 ezadmin_install_mysql
+ezadmin_configure_mysql

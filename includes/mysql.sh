@@ -43,6 +43,7 @@ ezadmin_install_mysql() #{{{
         ezadmin_message_error "MySQL failed to install."
         exit
     fi
+
 } #}}}
 
 ezadmin_configure_mysql() #{{{
