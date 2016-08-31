@@ -152,7 +152,7 @@ ezadmin_user_check_backups() #{{{
 {
     echo "=========== WARNING ==========="
     echo "Before you use any script from ezadm.in you should ensure that you have a recent working backup of your server."
-    echo "Do you have a working backup? (Type 'YES I HAVE A WORKING BACKUP')"
+    echo "Do you have a working backup? (Type 'YES I HAVE A WORKING BACKUP' or 'Q' if you want to quit)"
     read WORKINGBACKUP
 
     if [ "$WORKINGBACKUP" != "YES I HAVE A WORKING BACKUP" ] && [ "$WORKINGBACKUP" != "Q" ]; then
