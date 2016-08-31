@@ -1,8 +1,18 @@
 #!/bin/bash
-wget 'https://raw.githubusercontent.com/demon012/EZADMIN_SCRIPTS/master/boilerplate.sh' -qO /tmp/ezadmin_boilerplate.sh
-source /tmp/ezadmin_boilerplate.sh
-rm /tmp/ezadmin_boilerplate.sh
-
+###### BEGIN BOILERPLATE #######
+EZADMIN_BOILERPLATEURL='https://raw.githubusercontent.com/demon012/EZADMIN_SCRIPTS/master/boilerplate.sh' 
+if [ -x /usr/bin/curl ]; then
+    curl $EZADMIN_BOILERPLATEURL -so /tmp/ezadmin_boilerplate.sh
+    source /tmp/ezadmin_boilerplate.sh
+    rm /tmp/ezadmin_boilerplate.sh
+elif [ -x /usr/bin/wget ]; then
+    wget $EZADMIN_BOILERPLATEURL -qO /tmp/ezadmin_boilerplate.sh
+    source /tmp/ezadmin_boilerplate.sh
+    rm /tmp/ezadmin_boilerplate.sh
+else
+    echo "Neither wget or curl found. Unable to continue, aborting EZADMIN."
+    echo "Please install wget or curl and then try again."
+fi
 ###### END BOILERPLATE #######
 
 declare -A MYSQL_PACKAGE=( ["centos"]="mysql-server" ["ubuntu"]="mysql-server" ["debian"]="mysql-server" )
@@ -36,5 +46,4 @@ if [ "$EZADMIN_ID" == "centos" ]; then
     fi
 fi
 echo "Installing mysql with command: $EZADMIN_PKG_INSTALL ${MYSQL_PACKAGE[$EZADMIN_ID]}"
-echo 4
 $EZADMIN_PKG_INSTALL ${MYSQL_PACKAGE[$EZADMIN_ID]}
