@@ -75,25 +75,25 @@ ezadmin_message_error()
 show_ezadmin_header() #{{{
 {
   #Welcome Message
-  read -r -d '' HEADER <<'EOF'
-  _______  _______  _______  ______   _______    _________ _
-(  ____ \/ ___   )(  ___  )(  __  \ (       )   \__   __/( (    /|
-| (    \/\/   )  || (   ) || (  \  )| () () |      ) (   |  \  ( |
-| (__        /   )| (___) || |   ) || || || |      | |   |   \ | |
-|  __)      /   / |  ___  || |   | || |(_)| |      | |   | (\ \) |
-| (        /   /  | (   ) || |   ) || |   | |      | |   | | \   |
-| (____/\ /   (_/\| )   ( || (__/  )| )   ( | _ ___) (___| )  \  |
-(_______/(_______/|/     \|(______/ |/     \|(_)\_______/|/    )_)
-'
-'
-Please ensure full backups have been taken prior to running this script.
 
-EZADMIN are not responsible for any loss of data.
-
-p.s. Please report any bugs to http://bugs.ezadm.in.
-EOF
-    ezadmin_message "$HEADER" "$COLOUR_FG_GREEN"
-
+  echo -e "$COLOUR_FG_GREEN"
+  echo '  _______  _______  _______  ______   _______    _________ _       '
+  echo '(  ____ \/ ___   )(  ___  )(  __  \ (       )   \__   __/( (    /|'
+  echo '| (    \/\/   )  || (   ) || (  \  )| () () |      ) (   |  \  ( |'
+  echo '| (__        /   )| (___) || |   ) || || || |      | |   |   \ | |'
+  echo '|  __)      /   / |  ___  || |   | || |(_)| |      | |   | (\ \) |'
+  echo '| (        /   /  | (   ) || |   ) || |   | |      | |   | | \   |'
+  echo '| (____/\ /   (_/\| )   ( || (__/  )| )   ( | _ ___) (___| )  \  |'
+  echo '(_______/(_______/|/     \|(______/ |/     \|(_)\_______/|/    )_)'
+  echo ''
+  echo ''
+  echo 'Please ensure full backups have been taken prior to running this script.'
+  echo ''
+  echo 'EZADMIN are not responsible for any loss of data.'
+  echo ''
+  echo 'p.s. Please report any bugs to http://bugs.ezadm.in.'
+  echo ''
+  echo -e "$COLOUR_FG_NC"
 } #}}}
 ezadmin_detect_distro() #{{{
 {
