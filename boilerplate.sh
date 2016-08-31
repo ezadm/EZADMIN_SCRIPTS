@@ -78,6 +78,7 @@ ezadmin_display_distro() #{{{
           echo "Please enter: 'YES' or 'NO' if you want to quit"
           ezadmin_display_distro
         elif [ "$CORRECTOS" == "NO" ]; then
+          echo "We were unable to detect your OS correctly, exiting.."
           exit
         fi
 } #}}}
