@@ -244,11 +244,48 @@ ezadmin_message_error "Error, you have no backups! You need a backup to be able 
 
 #### Operating System and Distribution variables
 
+The majority of these variables are populated from /etc/os-release which contains most of this information. *All* of the variables that exist within os-release will be available to the scripts prefixed with EZADMIN_.
+
+So for example you can use even $EZADMIN_HOME_URL to get the URL of the distro's website.
+
+An example of what os-release looks like under Centos 7:
+
+```
+Status: Downloaded newer image for centos:7
+NAME="CentOS Linux"
+VERSION="7 (Core)"
+ID="centos"
+ID_LIKE="rhel fedora"
+VERSION_ID="7"
+PRETTY_NAME="CentOS Linux 7 (Core)"
+ANSI_COLOR="0;31"
+CPE_NAME="cpe:/o:centos:centos:7"
+HOME_URL="https://www.centos.org/"
+BUG_REPORT_URL="https://bugs.centos.org/"
+```
+
+and under Ubuntu 16.10:
+
+```
+NAME="Ubuntu"
+VERSION="16.10 (Yakkety Yak)"
+ID=ubuntu
+ID_LIKE=debian
+PRETTY_NAME="Ubuntu 16.10"
+VERSION_ID="16.10"
+HOME_URL="http://www.ubuntu.com/"
+SUPPORT_URL="http://help.ubuntu.com/"
+BUG_REPORT_URL="http://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="http://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+VERSION_CODENAME=yakkety
+UBUNTU_CODENAME=yakkety
+```
+
 ##### EZADMIN_OS
 
 The EZADMIN_OS variable contains the Operating System that the script is running on.
 
-This will likely be set to one of:
+This will be set to one of:
 
 ```
 freebsd
@@ -260,14 +297,21 @@ solaris
 windows
 ```
 
-##### EZADMIN_DISTRIB_ID
+##### EZADMIN_ID
 
+This is populated from the os-release ID and will be the distribution name for example:
 
+```
+ubuntu
+debian
+arch
+gentoo
+manjaro
+```
 
-##### EZADMIN_DISTRIB_RELEASE
+Keep in mind for operating systems that do not have distributions (anything that isn't Linux) this variable will be set to be 'Unknown'.
 
-##### EZADMIN_DISTRIB_CODENAME
+##### EZADMIN_VERSION_ID
 
-##### EZADMIN_DISTRIB_DESCRIPTION
-
+EZADMIN_VERSION_ID contains the version of the distribution which as the example above shows would be 7 for Centos 7 and 16.10 for Ubuntu 16.10.
 
