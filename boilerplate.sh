@@ -175,6 +175,7 @@ ezadmin_detect_distro() #{{{
             export EZADMIN_ID='arch'
             export EZADMIN_VERSION_ID='rolling-release'
             export EZADMIN_PRETTY_NAME="Arch Linux"
+            echo $EZADMIN_VERSION_ID
         elif [ grep -i 'centos' /etc/redhat-release &> /dev/null ]; then
             export EZADMIN_OS='Linux'
             export EZADMIN_ID='centos'
