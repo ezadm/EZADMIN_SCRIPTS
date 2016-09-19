@@ -250,6 +250,7 @@ The EZADMIN_OS variable contains the Operating System that the script is running
 
 This will likely be set to one of:
 
+```
 freebsd
 hurd
 linux
@@ -257,8 +258,11 @@ macos
 netbsd
 solaris
 windows
+```
 
 ##### EZADMIN_DISTRIB_ID
+
+
 
 ##### EZADMIN_DISTRIB_RELEASE
 
