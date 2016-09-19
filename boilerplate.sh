@@ -163,21 +163,23 @@ show_ezadmin_header() #{{{
   echo ''
   echo -e "$COLOUR_FG_NC"
 } #}}}
-
 ezadmin_detect_distro() #{{{
 {
-        printf "${RED}"
-        echo "=========== OS and Distribution Detected ==========="
-        printf "${NORMAL}"
         export EZADMIN_OS='Unknown'
-        export EZADMIN_DISTRIB_ID='Unknown'
-        export EZADMIN_DISTRIB_RELEASE='Unknown'
-        export EZADMIN_DISTRIB_CODENAME='Unknown'
-        export EZADMIN_DISTRIB_DESCRIPTION='Unknown'
 
         if [ -e /etc/os-release ]; then
             export EZADMIN_OS='Linux'
             eval `cat /etc/os-release | sed 's/^/export EZADMIN_/g'`
+        elif [ -e /etc/arch-release ]; then
+            export EZADMIN_OS='Linux'
+            export EZADMIN_ID='arch'
+            export EZADMIN_VERSION_ID='rolling-release'
+            export EZADMIN_PRETTY_NAME="Arch Linux"
+        elif [ grep -i 'centos' /etc/redhat-release &> /dev/null ]; then
+            export EZADMIN_OS='Linux'
+            export EZADMIN_ID='centos'
+            export EZADMIN_VERSION_ID=`awk '{ print $3; }' /etc/redhat-release`
+            export EZADMIN_PRETTY_NAME=`cat /etc/redhat-release`
         else
             ezadmin_message_error "Could not detect the operating system or distribution in use on this system."
             ezadmin_message_error "Please submit a bug report stating the operating system and version and if applicable what distribution."
@@ -186,6 +188,7 @@ ezadmin_detect_distro() #{{{
 } #}}}
 ezadmin_display_distro() #{{{
 {
+        echo "=========== OS and Distribution Detected ==========="
         echo "Operating System: $EZADMIN_OS"
         echo "Distro: $EZADMIN_ID"
         echo "Distro version: $EZADMIN_VERSION_ID"
