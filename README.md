@@ -242,4 +242,28 @@ ezadmin_message_error "Error, you have no backups! You need a backup to be able 
 
 ### Variables
 
+#### Operating System and Distribution variables
+
+##### EZADMIN_OS
+
+The EZADMIN_OS variable contains the Operating System that the script is running on.
+
+This will likely be set to one of:
+
+freebsd
+hurd
+linux
+macos
+netbsd
+solaris
+windows
+
+##### EZADMIN_DISTRIB_ID
+
+##### EZADMIN_DISTRIB_RELEASE
+
+##### EZADMIN_DISTRIB_CODENAME
+
+##### EZADMIN_DISTRIB_DESCRIPTION
+
 
