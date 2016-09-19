@@ -75,7 +75,7 @@ Would download a file containing the IP address of the server to a file called /
 
 ##### Installing packages (ezadmin_packageman_install)
 
-ezadmin_packageman_install installs a package using the distributions package manager. You will need to ensure that you have a list of the package names for the various different distributions in your script as a piece of software's package can be different between distributions.
+ezadmin_packageman_install installs a package using the distribution's package manager. You will need to ensure that you have a list of the package names for the various different distributions in your script as a piece of software's package can be different between distributions.
 
 ###### Usage
 
@@ -101,3 +101,145 @@ fi
 ```
 
 The second is to just have a if statement chain specifying the different distributions that you script current has been tested to support and set the package name variable within each section of that if statement.
+
+##### Removing packages (ezadmin_packageman_remove)
+
+ezadmin_packageman_remove removes a package using the distribution's package manager. You will need to ensure that you have a list of the package names for the various different distributions in your script as a piece of software's package can be different between distributions.
+
+###### Usage
+
+ezadmin_packageman_remove takes 1 argument which is the name of the package to remove.
+
+For example:
+
+```bash
+ezadmin_packageman_remove htop
+```
+
+However as mentioned above you will need to provide a distribution specific package name this can be done using several methods.
+
+The first and recommended way is to define a list of package names for the different distrubtions as a associative array. An example of this can be found in the documentation for ezadmin_packageman_install above.
+
+##### Checking packages are installed (ezadmin_packageman_checkinstalled)
+
+ezadmin_packageman_checkinstalled can be used to check to see if a package is installed. You will need to ensure that the package name is correct for the distribution in use so please use the associative array method as documented in the ezadmin_packageman_install section.
+
+###### Usage
+
+ezadmin_packageman_checkinstalled takes 1 argument which is the name of the package to check is installed. ezadmin_packageman_checkinstalled then returns true if the package is installed and false if the package is not installed and can be used in various ways as shown below:
+
+```bash
+if [ ezadmin_packageman_checkinstalled mysql-server ]; then
+    echo "MySQL is installed!"
+fi
+
+MYSQL_PACKAGE_INSTALLED=ezadmin_packageman_checkinstalled mysql-server
+```
+
+#### Message functions (Script status messages)
+
+##### Normal Status Message (ezadmin_message)
+
+ezadmin_message should be used for the normal messages notifying the user of key points in the script. The output is coloured to ensure that it can be seen amongst the output of the programs that your script may run.
+
+###### Usage
+
+ezadmin_message takes 3 arguments which are the message it should present to the user and the colour of the message text and the colour of the message background.
+
+The list of available colours is:
+
+Foreground Colours:
+```bash
+COLOUR_FG_NC
+COLOUR_FG_BLACK
+COLOUR_FG_RED
+COLOUR_FG_GREEN
+COLOUR_FG_YELLOW
+COLOUR_FG_BLUE
+COLOUR_FG_MAGENTA
+COLOUR_FG_CYAN
+COLOUR_FG_LIGHTGRAY
+COLOUR_FG_DARKGRAY
+COLOUR_FG_LIGHTRED
+COLOUR_FG_LIGHTGREEN
+COLOUR_FG_LIGHTYELLOW
+COLOUR_FG_LIGHTBLUE
+COLOUR_FG_LIGHTMAGENTA
+COLOUR_FG_LIGHTCYAN
+COLOUR_FG_WHITE
+```
+
+Background Colours:
+```bash
+COLOUR_BG_NC
+COLOUR_BG_BLACK
+COLOUR_BG_RED
+COLOUR_BG_GREEN
+COLOUR_BG_YELLOW
+COLOUR_BG_BLUE
+COLOUR_BG_MAGENTA
+COLOUR_BG_CYAN
+COLOUR_BG_LIGHTGRAY
+COLOUR_BG_DARKGRAY
+COLOUR_BG_LIGHTRED
+COLOUR_BG_LIGHTGREEN
+COLOUR_BG_LIGHTYELLOW
+COLOUR_BG_LIGHTBLUE
+COLOUR_BG_LIGHTMAGENTA
+COLOUR_BG_LIGHTCYAN
+COLOUR_BG_WHITE
+```
+
+For example:
+
+```bash
+ezadmin_message "Installing MySQL" $COLOUR_FG_BLACK $COLOUR_BG_WHITE
+```
+
+Would result in a message with a black font on a white background.
+
+##### Success Status Message (ezadmin_message_success)
+
+ezadmin_message_success should be used for messages notifying the user of success in running a key part of the script. The output is coloured to ensure that it can be seen amongst the output of the programs that your script may run.
+
+###### Usage
+
+ezadmin_message_success takes one argument which is the message it should present to the user.
+
+For example:
+
+```bash
+ezadmin_message_success "MySQL installed successfully"
+```
+
+##### Warning Status Message (ezadmin_message_warning)
+
+ezadmin_message_warning should be used for messages warning the user that they need to perform an action or that something may have not ran correctly. The output is coloured to ensure that it can be seen amongst the output of the programs that your script may run.
+
+###### Usage
+
+ezadmin_message_warning takes one argument which is the message it should present to the user.
+
+For example:
+
+```bash
+ezadmin_message_warning "Warning: EZADMIN discovered something in your logs that may indicate that you have a filesystem corruption issue, please run a manual fsck on your server's filesystem!"
+```
+
+##### Error Status Message (ezadmin_message_error)
+
+ezadmin_message_error should be used for messages notifying the user of an error that occurred during the execution of the script. The output is coloured to ensure that it can be seen amongst the output of the programs that your script may run.
+
+###### Usage
+
+ezadmin_message_error takes one argument which is the message it should present to the user.
+
+For example:
+
+```bash
+ezadmin_message_error "Error, you have no backups! You need a backup to be able to restore from it!"
+```
+
+### Variables
+
+
