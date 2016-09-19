@@ -120,26 +120,26 @@ ezadmin_packageman_checkinstalled() #{{{
 } #}}}
 ezadmin_message() #{{{
 {
-    MESSAGE=$1
-    COLOUR=$2
-    COLOUR_BG=$3
+    MESSAGE="$1"
+    COLOUR="$2"
+    COLOUR_BG="$3"
 
-    echo -e "$COLOUR$COLOUR_BG$MESSAGE$COLOUR_FG_NC$COLOUR_BG_NC"
+    echo -e "$COLOUR $COLOUR_BG $MESSAGE $COLOUR_FG_NC $COLOUR_BG_NC"
 } #}}}
 ezadmin_message_success() #{{{
 {
-    MESSAGE=$1
-    echo -e "$COLOUR_FG_GREEN$MESSAGCOLOUR_FG_NC$COLOUR_BG_NC"
+    MESSAGE="$1"
+    echo -e "$COLOUR_FG_GREEN $MESSAGE $COLOUR_FG_NC $COLOUR_BG_NC"
 } #}}}
 ezadmin_message_warning() #{{{
 {
-    MESSAGE=$1
-    echo -e "$COLOUR_FG_YELLOW$MESSAGCOLOUR_FG_NC$COLOUR_BG_NC"
+    MESSAGE="$1"
+    echo -e "$COLOUR_FG_YELLOW $MESSAGE $COLOUR_FG_NC $COLOUR_BG_NC"
 } #}}}
 ezadmin_message_error() #{{{
 {
-    MESSAGE=$1
-    echo -e "$COLOUR_FG_RED$MESSAGCOLOUR_FG_NC$COLOUR_BG_NC"
+    MESSAGE="$1"
+    echo -e "$COLOUR_FG_RED $MESSAGE $COLOUR_FG_NC $COLOUR_BG_NC"
 } #}}}
 show_ezadmin_header() #{{{
 {
