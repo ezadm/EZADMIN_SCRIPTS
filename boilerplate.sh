@@ -178,6 +178,10 @@ ezadmin_detect_distro() #{{{
         if [ -e /etc/os-release ]; then
             export EZADMIN_OS='Linux'
             eval `cat /etc/os-release | sed 's/^/export EZADMIN_/g'`
+        else
+            ezadmin_message_error "Could not detect the operating system or distribution in use on this system."
+            ezadmin_message_error "Please submit a bug report stating the operating system and version and if applicable what distribution."
+            exit
         fi
 } #}}}
 ezadmin_display_distro() #{{{
