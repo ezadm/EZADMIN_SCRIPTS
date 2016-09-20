@@ -120,26 +120,26 @@ ezadmin_packageman_checkinstalled() #{{{
 } #}}}
 ezadmin_message() #{{{
 {
-    MESSAGE=$1
-    COLOUR=$2
-    COLOUR_BG=$3
+    MESSAGE="$1"
+    COLOUR="$2"
+    COLOUR_BG="$3"
 
-    echo -e "$COLOUR$COLOUR_BG$MESSAGE$COLOUR_FG_NC$COLOUR_BG_NC"
+    echo -e "$COLOUR $COLOUR_BG $MESSAGE $COLOUR_FG_NC $COLOUR_BG_NC"
 } #}}}
 ezadmin_message_success() #{{{
 {
-    MESSAGE=$1
-    echo -e "$COLOUR_FG_GREEN$MESSAGCOLOUR_FG_NC$COLOUR_BG_NC"
+    MESSAGE="$1"
+    echo -e "$COLOUR_FG_GREEN $MESSAGE $COLOUR_FG_NC $COLOUR_BG_NC"
 } #}}}
 ezadmin_message_warning() #{{{
 {
-    MESSAGE=$1
-    echo -e "$COLOUR_FG_YELLOW$MESSAGCOLOUR_FG_NC$COLOUR_BG_NC"
+    MESSAGE="$1"
+    echo -e "$COLOUR_FG_YELLOW $MESSAGE $COLOUR_FG_NC $COLOUR_BG_NC"
 } #}}}
 ezadmin_message_error() #{{{
 {
-    MESSAGE=$1
-    echo -e "$COLOUR_FG_RED$MESSAGCOLOUR_FG_NC$COLOUR_BG_NC"
+    MESSAGE="$1"
+    echo -e "$COLOUR_FG_RED $MESSAGE $COLOUR_FG_NC $COLOUR_BG_NC"
 } #}}}
 show_ezadmin_header() #{{{
 {
@@ -163,21 +163,24 @@ show_ezadmin_header() #{{{
   echo ''
   echo -e "$COLOUR_FG_NC"
 } #}}}
-
 ezadmin_detect_distro() #{{{
 {
-        printf "${RED}"
-        echo "=========== OS and Distribution Detected ==========="
-        printf "${NORMAL}"
         export EZADMIN_OS='Unknown'
-        export EZADMIN_DISTRIB_ID='Unknown'
-        export EZADMIN_DISTRIB_RELEASE='Unknown'
-        export EZADMIN_DISTRIB_CODENAME='Unknown'
-        export EZADMIN_DISTRIB_DESCRIPTION='Unknown'
 
         if [ -e /etc/os-release ]; then
             export EZADMIN_OS='Linux'
             eval `cat /etc/os-release | sed 's/^/export EZADMIN_/g'`
+        elif [ -e /etc/arch-release ]; then
+            export EZADMIN_OS='Linux'
+            export EZADMIN_ID='arch'
+            export EZADMIN_VERSION_ID='rolling-release'
+            export EZADMIN_PRETTY_NAME="Arch Linux"
+            echo $EZADMIN_VERSION_ID
+        elif [ grep -i 'centos' /etc/redhat-release &> /dev/null ]; then
+            export EZADMIN_OS='Linux'
+            export EZADMIN_ID='centos'
+            export EZADMIN_VERSION_ID=`awk '{ print $3; }' /etc/redhat-release`
+            export EZADMIN_PRETTY_NAME=`cat /etc/redhat-release`
         else
             ezadmin_message_error "Could not detect the operating system or distribution in use on this system."
             ezadmin_message_error "Please submit a bug report stating the operating system and version and if applicable what distribution."
@@ -186,6 +189,7 @@ ezadmin_detect_distro() #{{{
 } #}}}
 ezadmin_display_distro() #{{{
 {
+        echo "=========== OS and Distribution Detected ==========="
         echo "Operating System: $EZADMIN_OS"
         echo "Distro: $EZADMIN_ID"
         echo "Distro version: $EZADMIN_VERSION_ID"
@@ -219,9 +223,7 @@ ezadmin_init() #{{{
 } #}}}
 ezadmin_user_check_backups() #{{{
 {
-    printf "${RED}"
-    echo "=========== WARNING ==========="
-    printf "${NORMAL}"
+    ezadmin_message_warning "=========== WARNING ==========="
     echo "Before you use any script from ezadm.in you should ensure that you have a recent working backup of your server."
     echo "Do you have a working backup? (Type 'YES I HAVE A WORKING BACKUP' or 'Q' if you want to quit)"
     read WORKINGBACKUP
