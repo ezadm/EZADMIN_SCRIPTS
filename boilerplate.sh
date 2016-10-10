@@ -210,7 +210,6 @@ ezadmin_display_distro() #{{{
 ezadmin_init() #{{{
 {
     init_colours
-    show_ezadmin_header
     ezadmin_detect_distro
 
     export EZADMIN_SERVER_IPS=$( ip addr | grep -Eo 'inet [0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -v '127.0.0.1' | cut -d' ' -f2 )
@@ -250,5 +249,3 @@ ezadmin_detect_control_panel() #{{{
 
 clear
 ezadmin_init
-ezadmin_display_distro
-ezadmin_user_check_backups
