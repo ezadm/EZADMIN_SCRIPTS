@@ -42,6 +42,9 @@ ezadmin_include() #{{{
     rm -f /tmp/ezadmin_include.sh
 } #}}}
 ezadmin_include 'https://raw.githubusercontent.com/demon012/EZADMIN_SCRIPTS/master/boilerplate.sh'
+show_ezadmin_header
+ezadmin_display_distro
+ezadmin_user_check_backups
 ###### END BOILERPLATE ########}}}
 ```
 
