@@ -53,6 +53,14 @@ while true; do
   esac
 done
 
+echo "FTP=$FTP"
+echo "HELP=$HELP"
+echo "USER=$USER"
+echo "PASS=$PASS"
+echo "HOST=$HOST"
+echo "PORT=$PORT"
+echo "DOMAIN=$DOMAIN"
+
 generate_ctrlpanel_username() #{{{
 {
     export CTRLPANEL_USERNAME=`echo "$DOMAIN" | tr -d '. ' | grep -Eo '^.{0,16}'`
