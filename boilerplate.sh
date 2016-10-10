@@ -240,9 +240,9 @@ ezadmin_detect_control_panel() #{{{
 {
     export EZADMIN_CTRLPANEL="unknown"
 
-    if [ -x /usr/bin/psa/bin/psa ]; then
+    if [ -x /usr/sbin/plesk ]; then
         export EZADMIN_CTRLPANEL="plesk"
-    elif [ -x /usr/bin/cpanel/ ]; then
+    elif [ -x /usr/bin/cpanel ]; then
         export EZADMIN_CTRLPANEL="cpanel"
     fi
 } #}}}
