@@ -19,26 +19,46 @@ ezadmin_include 'https://raw.githubusercontent.com/demon012/EZADMIN_SCRIPTS/mast
 ###### END BOILERPLATE ########}}}
 
 # inputs needed:
-#   src server ip:
-#   src server ssh user:
-#   src server ssh password:
-#   src server ssh port (default 22)
+#   src type (ssh or ftp)
+#   src server hostname
+#   src server port (default 22 if ssh default 21 if ftp)
+#   src server user:
+#   src server password:
 #   domain name to migrate
+OPTS=`getopt -o fhH:p:u:p:d: --longoptions ftp,help,host:,port:,user:,password:domain: -n 'parse-options' -- "$@"`
+
+if [ $? != 0 ] ; then echo "Failed parsing options." >&2 ; exit 1 ; fi
+echo "$OPTS"
+eval set -- "$OPTS"
+
+FTP=false
+HELP=false
 
 
-generate_ctrlpanel_username()#{{{
+while true; do
+  case "$1" in
+    -f | --ftp ) FTP=true; shift ;;
+    -h | --help ) HELP=true; shift ;;
+    -H | --host ) SRC_SERVER=$2; shift; shift ;;
+    -s | --stack-size ) STACK_SIZE="$2"; shift; shift ;;
+    -- ) shift; break ;;
+    * ) break ;;
+  esac
+done
+
+generate_ctrlpanel_username() #{{{
 {
     export CTRLPANEL_USERNAME=`echo "$DOMAIN" | tr -d '. ' | grep -Eo '^.{0,16}'`
     ezadmin_message "Using control panel username ${CTRLPANEL_USERNAME}"
-}#}}}
-generate_ctrlpanel_password()#{{{
+} #}}}
+generate_ctrlpanel_password() #{{{
 {
     export CTRLPANEL_PASSWORD=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};echo;`
     ezadmin_message "Using control panel password ${CTRLPANEL_PASSWORD}"
-}#}}}
+} #}}}
 
 # create hosting account
-create_hosting_account()#{{{
+create_hosting_account() #{{{
 {
     generate_ctrlpanel_username
     generate_ctrlpanel_password
@@ -62,10 +82,10 @@ create_hosting_account()#{{{
         ezadmin_message_error "Could not detect control panel. Unable to migrate the site."
         exit
     fi
-}#}}}
+} #}}}
 
 # migrate files
-migrate_files()#{{{
+migrate_files() #{{{
 {
     mkdir $ALLDEST
     cd $ALLDEST
@@ -81,50 +101,57 @@ migrate_files()#{{{
     cp -a $ALLDEST/htdocs/* $SITEDEST
 
     # fi
-}#}}}
+} #}}}
 
 # identify site type
-identify_site_cms()#{{{
+identify_site_cms() #{{{
 {
     export CMS ="unknown"
 	if [ -f $SITEDEST/wp-config.php ]; then
 	    export CMS="wordpress"
-    elif [ -f $SITEDEST/app/ ]
-
-}#}}}
+    elif [ -f $SITEDEST/app/ ]; then
+        export CMS="magento"
+    fi
+} #}}}
 
 # parse site config file
-parse_site_cms_config()#{{{
+parse_site_cms_config() #{{{
 {
-}#}}}
+    :
+} #}}}
 
 # create database
-create_site_database()#{{{
+create_site_database() #{{{
 {
-}#}}}
+    :
+} #}}}
 
 # create database user
-create_site_database_user()#{{{
+create_site_database_user() #{{{
 {
-}#}}}
+    :
+} #}}}
 
 # grant database user permissions
-grant_database_permissions()#{{{
+grant_database_permissions() #{{{
 {
-}#}}}
+    :
+} #}}}
 
 # migrate database
-migrate_database()#{{{
+migrate_database() #{{{
 {
-}#}}}
+    :
+} #}}}
 
 # update site config file
-update_cms_config()#{{{
+update_cms_config() #{{{
 {
-}#}}}
+    :
+} #}}}
 
 # fix site file permissions
-fix_site_file_permissions()
+fix_site_file_permissions() #{{{
 {
     if [ "$EZADMIN_CTRLPANEL" == "cpanel" ]; then
         wget https://raw.githubusercontent.com/PeachFlame/cPanel-fixperms/master/fixperms.sh && bash fixperms.sh -a $DOMACCOUNT && rm -f fixperms.sh
@@ -133,4 +160,4 @@ fix_site_file_permissions()
     else
         ezadmin_message_error "Command to fix permissions is unknown."
     fi
-}
+} #}}}
