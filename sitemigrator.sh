@@ -145,7 +145,15 @@ identify_site_cms() #{{{
 # parse site config file
 parse_site_cms_config() #{{{
 {
-    :
+    cd $SITEDEST
+    if [ "$CMS" == "wordpress" ]; then
+		if [ -e "wp-config.php" ]; then
+			export DB_HOST=`grep 'DB_HOST' wp-config.php  | cut -d"'" -f4`;
+			export DB_NAME=`grep 'DB_NAME' wp-config.php  | cut -d"'" -f4`;
+			export DB_USER=`grep 'DB_USER' wp-config.php  | cut -d"'" -f4`;
+			export DB_PASSWORD=`grep 'DB_PASSWORD' wp-config.php  | cut -d"'" -f4`;
+		fi
+    fi
 } #}}}
 
 # create database
