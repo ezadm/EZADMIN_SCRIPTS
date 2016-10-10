@@ -39,7 +39,7 @@ ezadmin_include() #{{{
         echo "Please install wget or curl and then try again."
     fi
     source /tmp/ezadmin_include.sh
-    rm /tmp/ezadmin_include.sh
+    rm -f /tmp/ezadmin_include.sh
 } #}}}
 ezadmin_include 'https://raw.githubusercontent.com/demon012/EZADMIN_SCRIPTS/master/boilerplate.sh'
 ###### END BOILERPLATE ########}}}
