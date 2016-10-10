@@ -213,6 +213,8 @@ ezadmin_init() #{{{
     show_ezadmin_header
     ezadmin_detect_distro
 
+    export EZADMIN_SERVER_IPS=$( ip addr | grep -Eo 'inet [0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -v '127.0.0.1' | cut -d' ' -f2 )
+
     if [ "$EZADMIN_ID" == "debian" ] || [ "$EZADMIN_ID" == "ubuntu" ]; then
         export EZADMIN_PKG_INSTALL="apt-get install -y"
     elif [ "$EZADMIN_ID" == "centos" ]; then
@@ -235,6 +237,16 @@ ezadmin_user_check_backups() #{{{
         exit
     fi
 } #}}}
+ezadmin_detect_control_panel()#{{{
+{
+    export EZADMIN_CTRLPANEL="unknown"
+
+    if [ -x /usr/bin/psa/bin/psa ]; then
+        export EZADMIN_CTRLPANEL="plesk"
+    elif [ -x /usr/bin/cpanel/ ]; then
+        export EZADMIN_CTRLPANEL="cpanel"
+    fi
+}#}}}
 
 clear
 ezadmin_init
