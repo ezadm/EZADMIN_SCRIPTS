@@ -25,7 +25,7 @@ ezadmin_include 'https://raw.githubusercontent.com/demon012/EZADMIN_SCRIPTS/mast
 #   src server user:
 #   src server password:
 #   domain name to migrate
-OPTS=`getopt -o fhH:p:u:p:d: --longoptions ftp,help,host:,port:,user:,password:domain: -n 'parse-options' -- "$@"`
+OPTS=`getopt -o fhH:p:u:p:d: --longoptions ftp,help,host:,port:,user:,password:,domain: -n 'parse-options' -- "$@"`
 
 if [ $? != 0 ] ; then echo "Failed parsing options." >&2 ; exit 1 ; fi
 echo "$OPTS"
@@ -33,14 +33,21 @@ eval set -- "$OPTS"
 
 FTP=false
 HELP=false
-
+USER=false
+PASS=false
+HOST=false
+PORT=false
+DOMAIN=false
 
 while true; do
   case "$1" in
     -f | --ftp ) FTP=true; shift ;;
     -h | --help ) HELP=true; shift ;;
-    -H | --host ) SRC_SERVER=$2; shift; shift ;;
-    -s | --stack-size ) STACK_SIZE="$2"; shift; shift ;;
+    -u | --user ) USER="$2"; shift; shift ;;
+    -p | --password ) USER="$2"; shift; shift ;;
+    -H | --host ) HOST="$2" shift; shift ;;
+    -P | --port ) PORT="$2"; shift; shift ;;
+    -d | --domain ) DOMAIN="$2"; shift; shift ;;
     -- ) shift; break ;;
     * ) break ;;
   esac
