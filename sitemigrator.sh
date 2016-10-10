@@ -93,6 +93,7 @@ create_hosting_account() #{{{
         CREATE_ACCOUNT_CMD="plesk bin subscription --create ${DOMAIN} -owner admin -service-plan 'Default Domain'"
         ezadmin_message "Creating Plesk account with command:"
         ezadmin_message "${CREATE_ACCOUNT_CMD}"
+        $CREATE_ACCOUNT_CMD
 
         export ALLDEST=/var/www/vhosts/${DOMACCOUNT}_ALLFILES/
         export SITEDEST=/var/www/vhosts/${DOMACCOUNT}/httpdocs/
