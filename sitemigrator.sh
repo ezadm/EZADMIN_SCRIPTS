@@ -18,49 +18,61 @@ ezadmin_include() #{{{
 ezadmin_include 'https://raw.githubusercontent.com/demon012/EZADMIN_SCRIPTS/master/boilerplate.sh'
 ###### END BOILERPLATE ########}}}
 
-# inputs needed:
-#   src type (ssh or ftp)
-#   src server hostname
-#   src server port (default 22 if ssh default 21 if ftp)
-#   src server user:
-#   src server password:
-#   domain name to migrate
-OPTS=`getopt -o fhH:p:u:p:d: --longoptions ftp,help,host:,port:,user:,password:,domain: -n 'parse-options' -- "$@"`
+validate_input() #{{{
+{
+    VALID=true
 
-if [ $? != 0 ] ; then echo "Failed parsing options." >&2 ; exit 1 ; fi
-echo "$OPTS"
-eval set -- "$OPTS"
+    VALID_USER=true
+    VALID_HOST=true
+    VALID_DOMAIN=true
 
-FTP=false
-HELP=false
-USER=false
-PASS=false
-HOST=false
-PORT=false
-DOMAIN=false
+    if [ "$USER" == "false" ]; then
+        VALID_USER=false
+        VALID=false
+    fi
+    # elif [ "$PASS" == "false" ]; then
+    #     ezadmin_message_error "Missing password"
+    #     VALID=false
+    if [ "$HOST" == "false" ]; then
+        VALID_HOST=false
+        VALID=false
+    fi
+    if [ "$DOMAIN" == "false" ]; then
+        VALID_DOMAIN=false
+        VALID=false
+    fi
 
-while true; do
-  case "$1" in
-    -f | --ftp ) FTP=true; shift ;;
-    -h | --help ) HELP=true; shift ;;
-    -u | --user ) USER="$2"; shift; shift ;;
-    -p | --password ) USER="$2"; shift; shift ;;
-    -H | --host ) HOST="$2" shift; shift ;;
-    -P | --port ) PORT="$2"; shift; shift ;;
-    -d | --domain ) DOMAIN="$2"; shift; shift ;;
-    -- ) shift; break ;;
-    * ) break ;;
-  esac
-done
-
-echo "FTP=$FTP"
-echo "HELP=$HELP"
-echo "USER=$USER"
-echo "PASS=$PASS"
-echo "HOST=$HOST"
-echo "PORT=$PORT"
-echo "DOMAIN=$DOMAIN"
-
+    if [ "$VALID" == false ]; then
+        display_usage
+        ezadmin_message_error "Unable to proceed as you failed to specify the mandatory options listed below:"
+        if [ "$VALID_USER" == "false" ]; then
+            ezadmin_message_error "Missing domain"
+        fi
+        if [ "$VALID_HOST" == "false" ]; then
+            ezadmin_message_error "Missing host"
+        fi
+        if [ "$VALID_USER" == "false" ]; then
+            ezadmin_message_error "Missing user"
+        fi
+        exit
+    fi
+} #}}}
+display_usage() #{{{
+{
+    echo "Usage: $0 [OPTIONS]..."
+    echo "Migrates sites using SSH or FTP to CPanel or Plesk servers."
+    echo "Example:"
+    echo -e "\t$0 -u sshuser -H sshhost.com -P 22 -d migrationdomain.com"
+    echo -e ""
+    echo -e "Options:"
+    echo -e "\t-f | --ftp: specify ftp mode. Need to use the -p option with this to specify the FTP password."
+    echo -e "\t-u <user> | --user <user>: the user to ssh or ftp with depending on wether --ftp is specified."
+    echo -e "\t-p <password> | --password <password>: the password to FTP with. Not required for SSH as SSH password has to be specified interactively."
+    echo -e "\t-H <host> | --host <host>: the host to SSH or FTP to."
+    echo -e "\t-P <port> | --port <port>: the port to SSH or FTP to."
+    echo -e "\t-d <domain> | --domain <domain>: the domain name of the domain we are migrating (Mandatory option)."
+    echo -e "\t-D | --debug: Enable debug output."
+} #}}}
 generate_ctrlpanel_username() #{{{
 {
     export CTRLPANEL_USERNAME=`echo "$DOMAIN" | tr -d '. ' | grep -Eo '^.{0,16}'`
@@ -176,3 +188,67 @@ fix_site_file_permissions() #{{{
         ezadmin_message_error "Command to fix permissions is unknown."
     fi
 } #}}}
+
+# inputs needed:
+#   src type (ssh or ftp)
+#   src server hostname
+#   src server port (default 22 if ssh default 21 if ftp)
+#   src server user:
+#   src server password:
+#   domain name to migrate
+OPTS=`getopt -o hfp:u:H:P:d:D --longoptions help,ftp,host:,port:,user:,password:,domain:,debug -n 'parse-options' -- "$@"`
+
+if [ $? != 0 ] ; then echo "Failed parsing options." >&2 ; exit 1 ; fi
+eval set -- "$OPTS"
+
+export FTP=false
+export HELP=false
+export USER=false
+export PASS=false
+export HOST=false
+export PORT=false
+export DOMAIN=false
+export DEBUG=false
+
+while true; do
+  case "$1" in
+    -f | --ftp ) export FTP=true; shift ;;
+    -h | --help ) export HELP=true; shift ;;
+    -u | --user ) export USER="$2"; shift; shift ;;
+    -p | --password ) export PASS="$2"; shift; shift ;;
+    -H | --host ) export HOST="$2"; shift; shift ;;
+    -P | --port ) export PORT="$2"; shift; shift ;;
+    -d | --domain ) export DOMAIN="$2"; shift; shift ;;
+    -D | --debug ) export DEBUG=true; shift; shift ;;
+    -- ) shift; break ;;
+    * ) break ;;
+  esac
+done
+
+if [ "$DEBUG" == "true" ]; then
+    echo "FTP=$FTP"
+    echo "HELP=$HELP"
+    echo "USER=$USER"
+    echo "PASS=$PASS"
+    echo "HOST=$HOST"
+    echo "PORT=$PORT"
+    echo "DOMAIN=$DOMAIN"
+    echo "DEBUG=$DEBUG"
+fi
+
+if [ "$HELP" == "true" ]; then
+    display_usage
+    exit
+fi
+
+validate_input
+create_hosting_account
+# migrate_files
+# identify_site_cms
+# parse_site_cms_config
+# create_site_database
+# create_site_user
+# grant_database_permissions
+# migrate_database
+# update_cms_config
+# fix_site_file_permissions
