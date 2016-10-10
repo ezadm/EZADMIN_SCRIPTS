@@ -18,9 +18,17 @@ ezadmin_include() #{{{
 ezadmin_include 'https://raw.githubusercontent.com/demon012/EZADMIN_SCRIPTS/master/boilerplate.sh'
 ###### END BOILERPLATE ########}}}
 
+# inputs needed:
+#   src server ip:
+#   src server ssh user:
+#   src server ssh password:
+#   src server ssh port (default 22)
+#   domain name to migrate
+
+
 generate_ctrlpanel_username()#{{{
 {
-    export CTRLPANEL_USERNAME=`echo "$DOMAIN" | sed 's/\.//' | grep -Eo '^.{0,16}'`
+    export CTRLPANEL_USERNAME=`echo "$DOMAIN" | tr -d '. ' | grep -Eo '^.{0,16}'`
     ezadmin_message "Using control panel username ${CTRLPANEL_USERNAME}"
 }#}}}
 generate_ctrlpanel_password()#{{{
@@ -48,8 +56,8 @@ create_hosting_account()#{{{
         ${CREATE_ACCOUNT_CMD}
 
         export DOMACCOUNT=`cat /etc/userdomains | grep "$DOMAIN" | cut -d' ' -f 2`
-        export ALLDEST=/var/www/vhosts/${DOMACCOUNT}_ALLFILES/
-        export SITEDEST=/var/www/vhosts/${DOMACCOUNT}/httpdocs/
+        export ALLDEST=/home/${DOMACCOUNT}_ALLFILES/
+        export SITEDEST=/home/${DOMACCOUNT}/public_html/
     elif [ "$EZADMIN_CTRLPANEL" == "unknown" ]; then
         ezadmin_message_error "Could not detect control panel. Unable to migrate the site."
         exit
@@ -78,6 +86,11 @@ migrate_files()#{{{
 # identify site type
 identify_site_cms()#{{{
 {
+    export CMS ="unknown"
+	if [ -f $SITEDEST/wp-config.php ]; then
+	    export CMS="wordpress"
+    elif [ -f $SITEDEST/app/ ]
+
 }#}}}
 
 # parse site config file
