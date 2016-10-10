@@ -237,7 +237,7 @@ ezadmin_user_check_backups() #{{{
         exit
     fi
 } #}}}
-ezadmin_detect_control_panel()#{{{
+ezadmin_detect_control_panel() #{{{
 {
     export EZADMIN_CTRLPANEL="unknown"
 
@@ -246,7 +246,7 @@ ezadmin_detect_control_panel()#{{{
     elif [ -x /usr/bin/cpanel/ ]; then
         export EZADMIN_CTRLPANEL="cpanel"
     fi
-}#}}}
+} #}}}
 
 clear
 ezadmin_init
