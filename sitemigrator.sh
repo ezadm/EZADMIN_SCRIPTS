@@ -26,14 +26,14 @@ validate_input() #{{{
     VALID_HOST=true
     VALID_DOMAIN=true
 
-    if [ "$USER" == "false" ]; then
+    if [ "$SRCUSER" == "false" ]; then
         VALID_USER=false
         VALID=false
     fi
     # elif [ "$PASS" == "false" ]; then
     #     ezadmin_message_error "Missing password"
     #     VALID=false
-    if [ "$HOST" == "false" ]; then
+    if [ "$SRCHOST" == "false" ]; then
         VALID_HOST=false
         VALID=false
     fi
@@ -124,7 +124,7 @@ migrate_files() #{{{
     # else
     # else fallback to tarsync
 
-    ssh -p $SRC_SSHPORT $SRC_SSHUSER@$SRC_SSH 'tar cvpj .' | tar xvpj
+    ssh -p $SRCPORT $SRCUSER@$SRCHOST 'tar cvpj .' | tar xvpj
     cp -a $ALLDEST/htdocs/* $SITEDEST
 
     # fi
@@ -150,31 +150,49 @@ parse_site_cms_config() #{{{
 # create database
 create_site_database() #{{{
 {
-    :
+    if [ "$EZADMIN_CTRLPANEL" == "plesk"]; then
+        plesk bin database --create $DB_NAME -domain $DOMAIN -type mysql
+    elif  [ "$EZADMIN_CTRLPANEL" == "cpanel" ]; then
+        export MYSQLPASS=`cat /root/.my.cnf | grep 'password' | cut -d'"' -f 2`
+        mysql -u root -p"${MYSQLPASS}" -e "CREATE DATABASE ${DB_NAME};"
+    fi
 } #}}}
 
 # create database user
 create_site_database_user() #{{{
 {
-    :
+    if [ "$EZADMIN_CTRLPANEL" == "plesk"]; then
+        plesk bin database --create-dbuser $DB_USER -passwd $DB_PASSWORD -domain $DOMAIN -database $DB_NAME -type mysql
+    elif [ "$EZADMIN_CTRLPANEL" == "cpanel" ]; then
+        mysql -u root -p"${MYSQLPASS}" -e "CREATE USER '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PASSWORD}'"
+        /usr/local/cpanel/bin/dbmaptool ${DOMACCOUNT} --type 'mysql' --dbs "${DB_NAME}" --dbusers "${DB_USER}"
+    fi
 } #}}}
 
 # grant database user permissions
 grant_database_permissions() #{{{
 {
-    :
+    if [ "$EZADMIN_CTRLPANEL" == "cpanel" ]; then
+        mysql -u root -p"${MYSQLPASS}" -e "GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PASSWORD}'"
+        mysql -u root -p"${MYSQLPASS}" -e "FLUSH PRIVILEGES"
+    fi
 } #}}}
 
 # migrate database
 migrate_database() #{{{
 {
-    :
+    mysqldump -h ${DB_HOST} -u $DB_USER -p${DB_PASSWORD} ${DB_NAME} | mysql -u "${DB_USER}" -p${DB_PASSWORD} ${DB_NAME}
 } #}}}
 
 # update site config file
 update_cms_config() #{{{
 {
-    :
+    if [ "$CMS" == "wordpress" ]; then
+        cd $SITEDEST
+        if [ -e "wp-config.php" ]; then
+            sed -i "s/${DB_HOST}/localhost/" wp-config.php
+        fi
+    fi
 } #}}}
 
 # fix site file permissions
@@ -203,10 +221,10 @@ eval set -- "$OPTS"
 
 export FTP=false
 export HELP=false
-export USER=false
-export PASS=false
-export HOST=false
-export PORT=false
+export SRCUSER=false
+export SRCPASS=false
+export SRCHOST=false
+export SRCPORT=false
 export DOMAIN=false
 export DEBUG=false
 
@@ -214,10 +232,10 @@ while true; do
   case "$1" in
     -f | --ftp ) export FTP=true; shift ;;
     -h | --help ) export HELP=true; shift ;;
-    -u | --user ) export USER="$2"; shift; shift ;;
-    -p | --password ) export PASS="$2"; shift; shift ;;
-    -H | --host ) export HOST="$2"; shift; shift ;;
-    -P | --port ) export PORT="$2"; shift; shift ;;
+    -u | --user ) export SRCUSER="$2"; shift; shift ;;
+    -p | --password ) export SRCPASS="$2"; shift; shift ;;
+    -H | --host ) export SRCHOST="$2"; shift; shift ;;
+    -P | --port ) export SRCPORT="$2"; shift; shift ;;
     -d | --domain ) export DOMAIN="$2"; shift; shift ;;
     -D | --debug ) export DEBUG=true; shift; shift ;;
     -- ) shift; break ;;
@@ -228,10 +246,10 @@ done
 if [ "$DEBUG" == "true" ]; then
     echo "FTP=$FTP"
     echo "HELP=$HELP"
-    echo "USER=$USER"
-    echo "PASS=$PASS"
-    echo "HOST=$HOST"
-    echo "PORT=$PORT"
+    echo "SRCUSER=$SRCUSER"
+    echo "SRCPASS=$SRCPASS"
+    echo "SRCHOST=$SRCHOST"
+    echo "SRCPORT=$SRCPORT"
     echo "DOMAIN=$DOMAIN"
     echo "DEBUG=$DEBUG"
 fi
