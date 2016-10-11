@@ -167,33 +167,33 @@ fix_site_file_permissions() #{{{
 # identify site type
 identify_site_cms() #{{{
 {
-    export WPPATH="$SITEDEST/wp-config.php"
-    export MAGENTOPATH="$SITEDEST/app/"
-    export JOOMLAPATH="$SITEDEST/"
-    export DRUPALPATH="$SITEDEST/"
-    export OPENCARTPATH="$SITEDEST/"
+    export WPPATH="${SITEDEST}wp-config.php"
+    export MAGENTOPATH="${SITEDEST}app/"
+    export JOOMLAPATH="${SITEDEST}"
+    export DRUPALPATH="${SITEDEST}"
+    export OPENCARTPATH="${SITEDEST}"
 
     export CMS="unknown"
 
     if [ "$WPCFG" != "false" ]; then
-        export WPPATH="$SITEDEST/$WPCFG"
+        export WPPATH="${SITEDEST}${WPCFG}"
         echo "WPPATH: $WPPATH"
     fi
 
     if [ "$MAGENTOCFG" != "false" ]; then
-        export MAGENTOPATH="$SITEDEST/$MAGENTOCFG"
+        export MAGENTOPATH="${SITEDEST}${MAGENTOCFG}"
     fi
 
     if [ "$JOOMLACFG" != "false" ]; then
-        export JOOMLAPATH="$SITEDEST/$JOOMLACFG"
+        export JOOMLAPATH="${SITEDEST}${JOOMLACFG}"
     fi
 
     if [ "$DRUPALCFG" != "false" ]; then
-        export DRUPALPATH="$SITEDEST/$DRUPALCFG"
+        export DRUPALPATH="${SITEDEST}${DRUPALCFG}"
     fi
 
     if [ "$OPENCARTCFG" != "false" ]; then
-        export OPENCARTPATH="$SITEDEST/$OPENCARTCFG"
+        export OPENCARTPATH="${SITEDEST}${OPENCARTCFG}"
     fi
 
     echo $WPPATH
