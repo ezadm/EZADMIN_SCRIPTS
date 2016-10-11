@@ -306,15 +306,15 @@ if [ "$HELP" == "true" ]; then
 fi
 
 validate_input
-#create_hosting_account
+create_hosting_account
 init_variables
-#migrate_files
+migrate_files
 fix_site_file_permissions
 identify_site_cms
 parse_site_cms_config
 verify_db_credentials
-# create_site_database
-# create_site_user
-# grant_database_permissions
-# migrate_database
-# update_cms_config
+create_site_database
+create_site_user
+grant_database_permissions
+migrate_database
+update_cms_config
