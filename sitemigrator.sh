@@ -177,6 +177,7 @@ identify_site_cms() #{{{
 
     if [ "$WPCFG" != "false" ]; then
         export WPPATH="$SITEDEST/$WPCFG"
+        echo "WPPATH: $WPPATH"
     fi
 
     if [ "$MAGENTOCFG" != "false" ]; then
