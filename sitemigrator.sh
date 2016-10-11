@@ -270,7 +270,7 @@ create_site_database() #{{{
 # create database user
 create_site_database_user() #{{{
 {
-    if [ "$EZADMIN_CTRLPANEL" == "plesk"]; then
+    if [ "$EZADMIN_CTRLPANEL" == "plesk" ]; then
         plesk bin database --create-dbuser $DB_USER -passwd $DB_PASSWORD -domain $DOMAIN -database $DB_NAME -type mysql
     elif [ "$EZADMIN_CTRLPANEL" == "cpanel" ]; then
         mysql -u root -p"${MYSQLPASS}" -e "CREATE USER '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PASSWORD}'"
