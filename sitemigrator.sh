@@ -196,6 +196,12 @@ identify_site_cms() #{{{
         export OPENCARTPATH="$SITEDEST/$OPENCARTCFG"
     fi
 
+    echo $WPPATH
+    echo $MAGENTOPATH
+    echo $JOOMLAPATH
+    echo $DRUPALPATH
+    echo $OPENCARTPATH
+
 	if [ -f $WPPATH ]; then
 	    export CMS="wordpress"
     elif [ -f $MAGENTOPATH ]; then
