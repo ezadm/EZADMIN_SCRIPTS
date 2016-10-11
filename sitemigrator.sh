@@ -37,10 +37,17 @@ validate_input() #{{{
         VALID_HOST=false
         VALID=false
     fi
+    if [ "$SRCPORT" == "false" ]; then
+        if [ "$FTP" == "true" ]; then
+            SRCPORT=21
+        else
+            SRCPORT=22
+        fi
     if [ "$DOMAIN" == "false" ]; then
         VALID_DOMAIN=false
         VALID=false
     fi
+
 
     if [ "$VALID" == false ]; then
         display_usage
@@ -56,6 +63,7 @@ validate_input() #{{{
         fi
         exit
     fi
+
 } #}}}
 display_usage() #{{{
 {
@@ -139,7 +147,7 @@ migrate_files() #{{{
         shopt -s dotglob nullglob
         cp -a $ALLDEST/htdocs/* $SITEDEST
     else
-        wget -r --user="$SRCUSER" --password="$SRCPASS" ftp://$SRCHOST/
+        wget -r --user="$SRCUSER" --password="$SRCPASS" ftp://$SRCHOST:$SRCPORT/
     fi
 } #}}}
 
