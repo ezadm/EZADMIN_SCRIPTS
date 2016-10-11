@@ -259,7 +259,7 @@ verify_db_credentials() #{{{
 # create database
 create_site_database() #{{{
 {
-    if [ "$EZADMIN_CTRLPANEL" == "plesk"]; then
+    if [ "$EZADMIN_CTRLPANEL" == "plesk" ]; then
         plesk bin database --create $DB_NAME -domain $DOMAIN -type mysql
     elif  [ "$EZADMIN_CTRLPANEL" == "cpanel" ]; then
         export MYSQLPASS=`cat /root/.my.cnf | grep 'password' | cut -d'"' -f 2`
@@ -390,7 +390,7 @@ if [ "$DBMIG" == "true" ]; then
 
     create_site_database
 
-    create_site_user
+    create_site_database_user
 
     grant_database_permissions
 
