@@ -109,6 +109,7 @@ create_hosting_account() #{{{
 init_variables() #{{{
 {
     if [ "$EZADMIN_CTRLPANEL" == "plesk" ]; then
+        export DOMACCOUNT="$DOMAIN"
         export ALLDEST=/var/www/vhosts/${DOMACCOUNT}_ALLFILES/
         export SITEDEST=/var/www/vhosts/${DOMACCOUNT}/httpdocs/
     fi
