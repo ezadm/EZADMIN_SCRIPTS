@@ -277,8 +277,8 @@ if [ "$HELP" == "true" ]; then
 fi
 
 validate_input
+#create_hosting_account
 init_variables
-create_hosting_account
 migrate_files
 # identify_site_cms
 # parse_site_cms_config
