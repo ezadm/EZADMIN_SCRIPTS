@@ -132,13 +132,6 @@ init_variables() #{{{
 # migrate files
 migrate_files() #{{{
 {
-    # check if rsync is available
-    # ssh -p $SRC_SSHPORT $SRC_SSHUSER@$SRC_SSH "which rsync"
-    # if rsync available use rsync
-    # if [ $? -eq 0 ]; then
-    #     rsync -avzp --progress $SRC_SSHPORT $SRC_SSHUSER@$SRC_SSH:
-    # else
-    # else fallback to tarsync
     if [ "$FTP" == "false" ]; then
         mkdir -p $ALLDEST
         cd $ALLDEST
@@ -146,6 +139,13 @@ migrate_files() #{{{
         ssh -p $SRCPORT $SRCUSER@$SRCHOST 'tar cvpj .' | tar xvpj
         shopt -s dotglob nullglob
         cp -a $ALLDEST/htdocs/* $SITEDEST
+        # check if rsync is available
+        # ssh -p $SRC_SSHPORT $SRC_SSHUSER@$SRC_SSH "which rsync"
+        # if rsync available use rsync
+        # if [ $? -eq 0 ]; then
+        #     rsync -avzp --progress $SRC_SSHPORT $SRC_SSHUSER@$SRC_SSH:
+        # else
+        # else fallback to tarsync
     else
         wget -r --user="$SRCUSER" --password="$SRCPASS" ftp://$SRCHOST:$SRCPORT/
     fi
