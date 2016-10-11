@@ -270,10 +270,14 @@ update_cms_config() #{{{
 #   src server user:
 #   src server password:
 #   domain name to migrate
-OPTS=`getopt -o hfp:u:H:P:d:D --longoptions help,ftp,host:,port:,user:,password:,domain:,debug -n 'parse-options' -- "$@"`
+OPTS=`getopt-o hFu:p:H:P:d:bafDw:m:j:r:o: --longoptions help,ftp,user:,password:,host:,port:,user:,password:,domain:,debug,no-account-creation,no-file-migration,no-database-migration,wordpress-config-path:,magento-config-path:,joomla-config-path:,drupal-config-path:,opencart-config-path: -n 'parse-options' -- "$@"`
 
 if [ $? != 0 ] ; then echo "Failed parsing options." >&2 ; exit 1 ; fi
 eval set -- "$OPTS"
+
+ACCCREATION=true
+FILEMIG=true
+DBMIG=true
 
 export FTP=false
 export HELP=false
@@ -286,14 +290,22 @@ export DEBUG=false
 
 while true; do
   case "$1" in
-    -f | --ftp ) export FTP=true; shift ;;
     -h | --help ) export HELP=true; shift ;;
+    -F | --ftp ) export FTP=true; shift ;;
     -u | --user ) export SRCUSER="$2"; shift; shift ;;
     -p | --password ) export SRCPASS="$2"; shift; shift ;;
     -H | --host ) export SRCHOST="$2"; shift; shift ;;
     -P | --port ) export SRCPORT="$2"; shift; shift ;;
     -d | --domain ) export DOMAIN="$2"; shift; shift ;;
-    -D | --debug ) export DEBUG=true; shift; shift ;;
+    -b | --debug ) export DEBUG=true; shift; shift ;;
+    -a | --no-account-creation ) export ACCCREATION=false; shift; shift ;;
+    -f | --no-file-migration ) export FILEMIG=false; shift; shift ;;
+    -D | --no-database-migration ) export DBMIG=false; shift; shift ;;
+    -w | --wordpress-config-path ) export DEBUG=true; shift; shift ;;
+    -m | --magento-config-path ) export DEBUG=true; shift; shift ;;
+    -j | --joomla-config-path ) export DEBUG=true; shift; shift ;;
+    -r | --drupal-config-path ) export DEBUG=true; shift; shift ;;
+    -o | --opencart-config-path ) export DEBUG=true; shift; shift ;;
     -- ) shift; break ;;
     * ) break ;;
   esac
@@ -316,15 +328,33 @@ if [ "$HELP" == "true" ]; then
 fi
 
 validate_input
-create_hosting_account
+
+if [ "$ACCCREATION" == "true" ]; then
+    create_hosting_account
+fi
+
 init_variables
-migrate_files
-fix_site_file_permissions
+
+if [ "$FILEMIG" == "true" ]; then
+    migrate_files
+    fix_site_file_permissions
+fi
+
 identify_site_cms
+
 parse_site_cms_config
-verify_db_credentials
-create_site_database
-create_site_user
-grant_database_permissions
-migrate_database
-update_cms_config
+
+if [ "$DBMIG" == "true" ]; then
+    verify_db_credentials
+
+    create_site_database
+
+    create_site_user
+
+    grant_database_permissions
+
+    migrate_database
+
+    update_cms_config
+fi
+
