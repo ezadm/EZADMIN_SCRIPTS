@@ -302,7 +302,7 @@ update_cms_config() #{{{
 #   src server user:
 #   src server password:
 #   domain name to migrate
-OPTS=`getopt-o hFu:p:H:P:d:bafDw:m:j:r:o: --longoptions help,ftp,user:,password:,host:,port:,user:,password:,domain:,debug,no-account-creation,no-file-migration,no-database-migration,wordpress-config-path:,magento-config-path:,joomla-config-path:,drupal-config-path:,opencart-config-path: -n 'parse-options' -- "$@"`
+OPTS=`getopt -o hFu:p:H:P:d:bafDw:m:j:r:o: --longoptions help,ftp,user:,password:,host:,port:,user:,password:,domain:,debug,no-account-creation,no-file-migration,no-database-migration,wordpress-config-path:,magento-config-path:,joomla-config-path:,drupal-config-path:,opencart-config-path: -n 'parse-options' -- "$@"`
 
 if [ $? != 0 ] ; then echo "Failed parsing options." >&2 ; exit 1 ; fi
 eval set -- "$OPTS"
