@@ -182,7 +182,27 @@ parse_site_cms_config() #{{{
 # create database
 create_site_database() #{{{
 {
-    if [ -z ${DB_HOST+x} ]
+    GOTDBDETAILS=true
+    if [ -z ${DB_HOST+x} ]; then
+        ezadmin_message_error "Unable to migrate database as migrator was unable to detect database host and it was not specified as a command line argument."
+        GOTDBDETAILS=false
+    fi
+    if [ -z ${DB_NAME+x} ]; then
+        ezadmin_message_error "Unable to migrate database as migrator was unable to detect the database name and it  was not specified as a command line argument."
+        GOTDBDETAILS=false
+    fi
+    if [ -z ${DB_USER+x} ]; then
+        ezadmin_message_error "Unable to migrate database as migrator was unable to detect the database user and it was not specified as a command line argument."
+        GOTDBDETAILS=false
+    fi
+    if [ -z ${DB_PASSWORD+x} ]; then
+        ezadmin_message_error "Unable to migrate database as migrator was unable to detect the database password and the host was not specified as a command line argument."
+        GOTDBDETAILS=false
+    fi
+    if [ "${GOTDBDETAILS}" == "false" ]; then
+        exit
+    fi
+
     if [ "$EZADMIN_CTRLPANEL" == "plesk"]; then
         plesk bin database --create $DB_NAME -domain $DOMAIN -type mysql
     elif  [ "$EZADMIN_CTRLPANEL" == "cpanel" ]; then
