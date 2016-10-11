@@ -94,21 +94,29 @@ create_hosting_account() #{{{
         ezadmin_message "Creating Plesk account with command:"
         ezadmin_message "${CREATE_ACCOUNT_CMD}"
         eval $CREATE_ACCOUNT_CMD
-
-        export ALLDEST=/var/www/vhosts/${DOMACCOUNT}_ALLFILES/
-        export SITEDEST=/var/www/vhosts/${DOMACCOUNT}/httpdocs/
     elif [ "$EZADMIN_CTRLPANEL" == "cpanel" ]; then
         CREATE_ACCOUNT_CMD="/scripts/wwwacct ${DOMAIN} ${CTRLPANEL_USERNAME} ${CTRLPANEL_PASSWORD} x3 n n n 0 0 0 0 0 0"
         ezadmin_message "Creating CPanel account with command:"
         ezadmin_message "${CREATE_ACCOUNT_CMD}"
         eval ${CREATE_ACCOUNT_CMD}
-
-        export DOMACCOUNT=`cat /etc/userdomains | grep "$DOMAIN" | cut -d' ' -f 2`
-        export ALLDEST=/home/${DOMACCOUNT}_ALLFILES/
-        export SITEDEST=/home/${DOMACCOUNT}/public_html/
     elif [ "$EZADMIN_CTRLPANEL" == "unknown" ]; then
         ezadmin_message_error "Could not detect control panel. Unable to migrate the site."
         exit
+    fi
+} #}}}
+
+# init variables
+init_variables() #{{{
+{
+    if [ "$EZADMIN_CTRLPANEL" == "plesk" ]; then
+        export ALLDEST=/var/www/vhosts/${DOMACCOUNT}_ALLFILES/
+        export SITEDEST=/var/www/vhosts/${DOMACCOUNT}/httpdocs/
+    fi
+
+    if [ "$EZADMIN_CTRLPANEL" == "cpanel" ]; then
+        export DOMACCOUNT=`cat /etc/userdomains | grep "$DOMAIN" | cut -d' ' -f 2`
+        export ALLDEST=/home/${DOMACCOUNT}_ALLFILES/
+        export SITEDEST=/home/${DOMACCOUNT}/public_html/
     fi
 } #}}}
 
@@ -269,8 +277,9 @@ if [ "$HELP" == "true" ]; then
 fi
 
 validate_input
+init_variables
 create_hosting_account
-# migrate_files
+migrate_files
 # identify_site_cms
 # parse_site_cms_config
 # create_site_database
