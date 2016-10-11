@@ -179,8 +179,8 @@ parse_site_cms_config() #{{{
     fi
 } #}}}
 
-# create database
-create_site_database() #{{{
+# verify database details are provided or detected
+verify_db_credentials() #{{{
 {
     GOTDBDETAILS=true
     if [ -z ${DB_HOST+x} ]; then
@@ -202,7 +202,11 @@ create_site_database() #{{{
     if [ "${GOTDBDETAILS}" == "false" ]; then
         exit
     fi
+} #}}}
 
+# create database
+create_site_database() #{{{
+{
     if [ "$EZADMIN_CTRLPANEL" == "plesk"]; then
         plesk bin database --create $DB_NAME -domain $DOMAIN -type mysql
     elif  [ "$EZADMIN_CTRLPANEL" == "cpanel" ]; then
@@ -306,7 +310,8 @@ init_variables
 #migrate_files
 fix_site_file_permissions
 identify_site_cms
-# parse_site_cms_config
+parse_site_cms_config
+verify_db_credentials
 # create_site_database
 # create_site_user
 # grant_database_permissions
