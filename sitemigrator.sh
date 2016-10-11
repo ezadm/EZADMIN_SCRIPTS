@@ -175,6 +175,8 @@ identify_site_cms() #{{{
 
     export CMS="unknown"
 
+    echo $
+
     if [ "$WPCFG" != "false" ]; then
         export WPPATH="${SITEDEST}${WPCFG}"
         echo "WPPATH: $WPPATH"
@@ -340,11 +342,11 @@ while true; do
     -a | --no-account-creation ) export ACCCREATION=false ; shift ;;
     -f | --no-file-migration ) export FILEMIG=false ; shift ;;
     -D | --no-database-migration ) export DBMIG=false ; shift ;;
-    -w | --wordpress-config-path ) export WPCFG=false ; shift; shift ;;
-    -m | --magento-config-path ) export MAGENTOCFG=false ; shift; shift ;;
-    -j | --joomla-config-path ) export JOOMLACFG=false ; shift; shift ;;
-    -r | --drupal-config-path ) export DRUPALCFG=false ; shift; shift ;;
-    -o | --opencart-config-path ) export OPENCARTCFG=false ; shift; shift ;;
+    -w | --wordpress-config-path ) export WPCFG="$2" ; shift; shift ;;
+    -m | --magento-config-path ) export MAGENTOCFG="$2" ; shift; shift ;;
+    -j | --joomla-config-path ) export JOOMLACFG="$2" ; shift; shift ;;
+    -r | --drupal-config-path ) export DRUPALCFG="$2" ; shift; shift ;;
+    -o | --opencart-config-path ) export OPENCARTCFG="$2" ; shift; shift ;;
     -- ) shift; break ;;
     * ) break ;;
   esac
