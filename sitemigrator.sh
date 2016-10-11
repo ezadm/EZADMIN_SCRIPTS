@@ -124,7 +124,7 @@ init_variables() #{{{
 # migrate files
 migrate_files() #{{{
 {
-    mkdir $ALLDEST
+    mkdir -p $ALLDEST
     cd $ALLDEST
     # check if rsync is available
     # ssh -p $SRC_SSHPORT $SRC_SSHUSER@$SRC_SSH "which rsync"
