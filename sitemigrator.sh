@@ -141,6 +141,18 @@ migrate_files() #{{{
     # fi
 } #}}}
 
+# fix site file permissions
+fix_site_file_permissions() #{{{
+{
+    if [ "$EZADMIN_CTRLPANEL" == "cpanel" ]; then
+        wget https://raw.githubusercontent.com/PeachFlame/cPanel-fixperms/master/fixperms.sh && bash fixperms.sh -a $DOMACCOUNT && rm -f fixperms.sh
+    elif [ "$EZADMIN_CTRLPANEL" == "plesk" ]; then
+        /usr/local/psa/bin/repair --restore-vhosts-permissions
+    else
+        ezadmin_message_error "Command to fix permissions is unknown."
+    fi
+} #}}}
+
 # identify site type
 identify_site_cms() #{{{
 {
@@ -170,6 +182,7 @@ parse_site_cms_config() #{{{
 # create database
 create_site_database() #{{{
 {
+    if [ -z ${DB_HOST+x} ]
     if [ "$EZADMIN_CTRLPANEL" == "plesk"]; then
         plesk bin database --create $DB_NAME -domain $DOMAIN -type mysql
     elif  [ "$EZADMIN_CTRLPANEL" == "cpanel" ]; then
@@ -212,18 +225,6 @@ update_cms_config() #{{{
         if [ -e "wp-config.php" ]; then
             sed -i "s/${DB_HOST}/localhost/" wp-config.php
         fi
-    fi
-} #}}}
-
-# fix site file permissions
-fix_site_file_permissions() #{{{
-{
-    if [ "$EZADMIN_CTRLPANEL" == "cpanel" ]; then
-        wget https://raw.githubusercontent.com/PeachFlame/cPanel-fixperms/master/fixperms.sh && bash fixperms.sh -a $DOMACCOUNT && rm -f fixperms.sh
-    elif [ "$EZADMIN_CTRLPANEL" == "plesk" ]; then
-        /usr/local/psa/bin/repair --restore-vhosts-permissions
-    else
-        ezadmin_message_error "Command to fix permissions is unknown."
     fi
 } #}}}
 
@@ -283,6 +284,7 @@ validate_input
 #create_hosting_account
 init_variables
 #migrate_files
+fix_site_file_permissions
 identify_site_cms
 # parse_site_cms_config
 # create_site_database
@@ -290,4 +292,3 @@ identify_site_cms
 # grant_database_permissions
 # migrate_database
 # update_cms_config
-# fix_site_file_permissions
