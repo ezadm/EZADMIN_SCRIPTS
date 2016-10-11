@@ -134,6 +134,7 @@ migrate_files() #{{{
     # else fallback to tarsync
 
     ssh -p $SRCPORT $SRCUSER@$SRCHOST 'tar cvpj .' | tar xvpj
+    shopt -s dotglob nullglob
     cp -a $ALLDEST/htdocs/* $SITEDEST
 
     # fi
@@ -279,8 +280,8 @@ fi
 validate_input
 #create_hosting_account
 init_variables
-migrate_files
-# identify_site_cms
+#migrate_files
+identify_site_cms
 # parse_site_cms_config
 # create_site_database
 # create_site_user
