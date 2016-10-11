@@ -168,6 +168,7 @@ fix_site_file_permissions() #{{{
 identify_site_cms() #{{{
 {
     export CMS="unknown"
+    if [  ]
 	if [ -f $SITEDEST/wp-config.php ]; then
 	    export CMS="wordpress"
     elif [ -f $SITEDEST/app/ ]; then
@@ -298,14 +299,14 @@ while true; do
     -P | --port ) export SRCPORT="$2"; shift; shift ;;
     -d | --domain ) export DOMAIN="$2"; shift; shift ;;
     -b | --debug ) export DEBUG=true; shift; shift ;;
-    -a | --no-account-creation ) export ACCCREATION=false; shift; shift ;;
-    -f | --no-file-migration ) export FILEMIG=false; shift; shift ;;
-    -D | --no-database-migration ) export DBMIG=false; shift; shift ;;
-    -w | --wordpress-config-path ) export DEBUG=true; shift; shift ;;
-    -m | --magento-config-path ) export DEBUG=true; shift; shift ;;
-    -j | --joomla-config-path ) export DEBUG=true; shift; shift ;;
-    -r | --drupal-config-path ) export DEBUG=true; shift; shift ;;
-    -o | --opencart-config-path ) export DEBUG=true; shift; shift ;;
+    -a | --no-account-creation ) export ACCCREATION=false; shift ;;
+    -f | --no-file-migration ) export FILEMIG=false; shift ;;
+    -D | --no-database-migration ) export DBMIG=false; shift ;;
+    -w | --wordpress-config-path ) export WPCFG=false; shift; shift ;;
+    -m | --magento-config-path ) export MAGENTOCFG=false; shift; shift ;;
+    -j | --joomla-config-path ) export JOOMLACFG=false; shift; shift ;;
+    -r | --drupal-config-path ) export DRUPALCFG=false; shift; shift ;;
+    -o | --opencart-config-path ) export OPENCARTCFG=false; shift; shift ;;
     -- ) shift; break ;;
     * ) break ;;
   esac
