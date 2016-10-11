@@ -175,7 +175,7 @@ identify_site_cms() #{{{
 
     export CMS="unknown"
 
-    if [ "$WPCFG" != "false"]; then
+    if [ "$WPCFG" != "false" ]; then
         export WPPATH="$SITEDEST/$WPCFG"
     fi
 
