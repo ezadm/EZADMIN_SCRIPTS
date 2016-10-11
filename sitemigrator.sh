@@ -144,7 +144,7 @@ migrate_files() #{{{
 # identify site type
 identify_site_cms() #{{{
 {
-    export CMS ="unknown"
+    export CMS="unknown"
 	if [ -f $SITEDEST/wp-config.php ]; then
 	    export CMS="wordpress"
     elif [ -f $SITEDEST/app/ ]; then
