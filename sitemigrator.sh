@@ -124,8 +124,6 @@ init_variables() #{{{
 # migrate files
 migrate_files() #{{{
 {
-    mkdir -p $ALLDEST
-    cd $ALLDEST
     # check if rsync is available
     # ssh -p $SRC_SSHPORT $SRC_SSHUSER@$SRC_SSH "which rsync"
     # if rsync available use rsync
@@ -133,12 +131,16 @@ migrate_files() #{{{
     #     rsync -avzp --progress $SRC_SSHPORT $SRC_SSHUSER@$SRC_SSH:
     # else
     # else fallback to tarsync
+    if [ "$FTP" == "false" ]; then
+        mkdir -p $ALLDEST
+        cd $ALLDEST
 
-    ssh -p $SRCPORT $SRCUSER@$SRCHOST 'tar cvpj .' | tar xvpj
-    shopt -s dotglob nullglob
-    cp -a $ALLDEST/htdocs/* $SITEDEST
-
-    # fi
+        ssh -p $SRCPORT $SRCUSER@$SRCHOST 'tar cvpj .' | tar xvpj
+        shopt -s dotglob nullglob
+        cp -a $ALLDEST/htdocs/* $SITEDEST
+    else
+        wget -r --user="$SRCUSER" --password="$SRCPASS" ftp://$SRCHOST/
+    fi
 } #}}}
 
 # fix site file permissions
