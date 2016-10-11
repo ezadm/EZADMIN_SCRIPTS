@@ -167,12 +167,44 @@ fix_site_file_permissions() #{{{
 # identify site type
 identify_site_cms() #{{{
 {
+    export WPPATH="$SITEDEST/wp-config.php"
+    export MAGENTOPATH="$SITEDEST/app/"
+    export JOOMLAPATH="$SITEDEST/"
+    export DRUPALPATH="$SITEDEST/"
+    export OPENCARTPATH="$SITEDEST/"
+
     export CMS="unknown"
-    if [  ]
-	if [ -f $SITEDEST/wp-config.php ]; then
+
+    if [ "$WPCFG" != "false"]; then
+        export WPPATH="$SITEDEST/$WPCFG"
+    fi
+
+    if [ "$MAGENTOCFG" != "false" ]; then
+        export MAGENTOPATH="$SITEDEST/$MAGENTOCFG"
+    fi
+
+    if [ "$JOOMLACFG" != "false" ]; then
+        export JOOMLAPATH="$SITEDEST/$JOOMLACFG"
+    fi
+
+    if [ "$DRUPALCFG" != "false" ]; then
+        export DRUPALPATH="$SITEDEST/$DRUPALCFG"
+    fi
+
+    if [ "$OPENCARTCFG" != "false" ]; then
+        export OPENCARTPATH="$SITEDEST/$OPENCARTCFG"
+    fi
+
+	if [ -f $WPPATH ]; then
 	    export CMS="wordpress"
-    elif [ -f $SITEDEST/app/ ]; then
+    elif [ -f $MAGENTOPATH ]; then
         export CMS="magento"
+    elif [ -f $JOOMLAPATH ]; then
+        export CMS="joomla"
+    elif [ -f $DRUPALPATH ]; then
+        export CMS="drupal"
+    elif [ -f $OPENCARTPATH ]; then
+        export CMS="opencart"
     fi
     echo "Detected $CMS content management system."
 } #}}}
@@ -180,13 +212,12 @@ identify_site_cms() #{{{
 # parse site config file
 parse_site_cms_config() #{{{
 {
-    cd $SITEDEST
     if [ "$CMS" == "wordpress" ]; then
-		if [ -e "wp-config.php" ]; then
-			export DB_HOST=`grep 'DB_HOST' wp-config.php  | cut -d"'" -f4`;
-			export DB_NAME=`grep 'DB_NAME' wp-config.php  | cut -d"'" -f4`;
-			export DB_USER=`grep 'DB_USER' wp-config.php  | cut -d"'" -f4`;
-			export DB_PASSWORD=`grep 'DB_PASSWORD' wp-config.php  | cut -d"'" -f4`;
+		if [ -e $WPPATH ]; then
+			export DB_HOST=`grep 'DB_HOST' $WPPATH  | cut -d"'" -f4`;
+			export DB_NAME=`grep 'DB_NAME' $WPPATH  | cut -d"'" -f4`;
+			export DB_USER=`grep 'DB_USER' $WPPATH  | cut -d"'" -f4`;
+			export DB_PASSWORD=`grep 'DB_PASSWORD' $WPPATH  | cut -d"'" -f4`;
 		fi
     fi
 } #}}}
