@@ -150,6 +150,7 @@ identify_site_cms() #{{{
     elif [ -f $SITEDEST/app/ ]; then
         export CMS="magento"
     fi
+    echo "Detected $CMS content management system."
 } #}}}
 
 # parse site config file
