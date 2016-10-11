@@ -91,8 +91,8 @@ create_hosting_account() #{{{
     generate_ctrlpanel_password
     if [ "$EZADMIN_CTRLPANEL" == "plesk" ]; then
         CREATE_ACCOUNT_CMD="plesk bin subscription --create ${DOMAIN} -owner admin -service-plan \"Unlimited\" -ip $EZADMIN_SERVER_IPS -login $CTRLPANEL_USERNAME -passwd \"$CTRLPANEL_PASSWORD\""
-        # ezadmin_message "Creating Plesk account with command:"
-        # ezadmin_message "${CREATE_ACCOUNT_CMD}"
+        ezadmin_message "Creating Plesk account with command:"
+        ezadmin_message "${CREATE_ACCOUNT_CMD}"
         $CREATE_ACCOUNT_CMD
 
         export ALLDEST=/var/www/vhosts/${DOMACCOUNT}_ALLFILES/
