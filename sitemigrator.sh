@@ -323,22 +323,22 @@ export DEBUG=false
 
 while true; do
   case "$1" in
-    -h | --help ) export HELP=true; shift ;;
-    -F | --ftp ) export FTP=true; shift ;;
+    -h | --help ) export HELP=true ; shift ;;
+    -F | --ftp ) export FTP=true ; shift ;;
     -u | --user ) export SRCUSER="$2"; shift; shift ;;
     -p | --password ) export SRCPASS="$2"; shift; shift ;;
     -H | --host ) export SRCHOST="$2"; shift; shift ;;
     -P | --port ) export SRCPORT="$2"; shift; shift ;;
     -d | --domain ) export DOMAIN="$2"; shift; shift ;;
-    -b | --debug ) export DEBUG=true; shift; shift ;;
-    -a | --no-account-creation ) export ACCCREATION=false; shift ;;
-    -f | --no-file-migration ) export FILEMIG=false; shift ;;
-    -D | --no-database-migration ) export DBMIG=false; shift ;;
-    -w | --wordpress-config-path ) export WPCFG=false; shift; shift ;;
-    -m | --magento-config-path ) export MAGENTOCFG=false; shift; shift ;;
-    -j | --joomla-config-path ) export JOOMLACFG=false; shift; shift ;;
-    -r | --drupal-config-path ) export DRUPALCFG=false; shift; shift ;;
-    -o | --opencart-config-path ) export OPENCARTCFG=false; shift; shift ;;
+    -b | --debug ) export DEBUG=true ; shift; shift ;;
+    -a | --no-account-creation ) export ACCCREATION=false ; shift ;;
+    -f | --no-file-migration ) export FILEMIG=false ; shift ;;
+    -D | --no-database-migration ) export DBMIG=false ; shift ;;
+    -w | --wordpress-config-path ) export WPCFG=false ; shift; shift ;;
+    -m | --magento-config-path ) export MAGENTOCFG=false ; shift; shift ;;
+    -j | --joomla-config-path ) export JOOMLACFG=false ; shift; shift ;;
+    -r | --drupal-config-path ) export DRUPALCFG=false ; shift; shift ;;
+    -o | --opencart-config-path ) export OPENCARTCFG=false ; shift; shift ;;
     -- ) shift; break ;;
     * ) break ;;
   esac
