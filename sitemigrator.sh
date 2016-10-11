@@ -43,11 +43,11 @@ validate_input() #{{{
         else
             SRCPORT=22
         fi
+    fi
     if [ "$DOMAIN" == "false" ]; then
         VALID_DOMAIN=false
         VALID=false
     fi
-
 
     if [ "$VALID" == false ]; then
         display_usage
