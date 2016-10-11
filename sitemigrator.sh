@@ -93,7 +93,7 @@ create_hosting_account() #{{{
         CREATE_ACCOUNT_CMD="plesk bin subscription --create ${DOMAIN} -owner admin -service-plan \"Unlimited\" -ip $EZADMIN_SERVER_IPS -login $CTRLPANEL_USERNAME -passwd \"$CTRLPANEL_PASSWORD\""
         ezadmin_message "Creating Plesk account with command:"
         ezadmin_message "${CREATE_ACCOUNT_CMD}"
-        $CREATE_ACCOUNT_CMD
+        eval $CREATE_ACCOUNT_CMD
 
         export ALLDEST=/var/www/vhosts/${DOMACCOUNT}_ALLFILES/
         export SITEDEST=/var/www/vhosts/${DOMACCOUNT}/httpdocs/
@@ -101,7 +101,7 @@ create_hosting_account() #{{{
         CREATE_ACCOUNT_CMD="/scripts/wwwacct ${DOMAIN} ${CTRLPANEL_USERNAME} ${CTRLPANEL_PASSWORD} x3 n n n 0 0 0 0 0 0"
         ezadmin_message "Creating CPanel account with command:"
         ezadmin_message "${CREATE_ACCOUNT_CMD}"
-        ${CREATE_ACCOUNT_CMD}
+        eval ${CREATE_ACCOUNT_CMD}
 
         export DOMACCOUNT=`cat /etc/userdomains | grep "$DOMAIN" | cut -d' ' -f 2`
         export ALLDEST=/home/${DOMACCOUNT}_ALLFILES/
