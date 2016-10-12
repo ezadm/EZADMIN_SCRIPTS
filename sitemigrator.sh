@@ -306,10 +306,10 @@ update_cms_config() #{{{
 {
     if [ "$CMS" == "wordpress" ]; then
         if [ -e "${WPCFG}" ]; then
-            sed -i "s/${DB_HOST}/localhost/" "${WPCFG}"
-            sed -i "s/[\'\"]DB_NAME[\'\"],[ ]+[\'\"].+[\'\"]/\'DB_NAME\', \'${DB_NAME}\'/" "${WPCFG}"
-            sed -i "s/[\'\"]DB_USER[\'\"],[ ]+[\'\"].+[\'\"]/\'DB_USER\', \'${DB_USER}\'/" "${WPCFG}"
-            sed -i "s/[\'\"]DB_PASSWORD[\'\"],[ ]+[\'\"].+[\'\"]/\'DB_PASSWORD\', \'${DB_PASSWORD}\'/" "${WPCFG}"
+            sed -ri "s/${DB_HOST}/localhost/" "${WPCFG}"
+            sed -ri "s/[\'\"]DB_NAME[\'\"],[ ]*[\'\"].+[\'\"]/\'DB_NAME\', \'${DB_NAME}\'/" "${WPCFG}"
+            sed -ri "s/[\'\"]DB_USER[\'\"],[ ]*[\'\"].+[\'\"]/\'DB_USER\', \'${DB_USER}\'/" "${WPCFG}"
+            sed -ri "s/[\'\"]DB_PASSWORD[\'\"],[ ]*[\'\"].+[\'\"]/\'DB_PASSWORD\', \'${DB_PASSWORD}\'/" "${WPCFG}"
         fi
     fi
 } #}}}
