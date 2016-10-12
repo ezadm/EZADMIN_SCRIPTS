@@ -301,13 +301,15 @@ migrate_database() #{{{
     mysqldump -h ${DB_HOST} -u $DB_USER -p${DB_PASSWORD} ${DB_NAME} | mysql -u "${DB_USER}" -p${DB_PASSWORD} ${DB_NAME}
 } #}}}
 
-# update site config file
+# update cms config file
 update_cms_config() #{{{
 {
     if [ "$CMS" == "wordpress" ]; then
-        cd $SITEDEST
-        if [ -e "wp-config.php" ]; then
-            sed -i "s/${DB_HOST}/localhost/" wp-config.php
+        if [ -e "${WPCFG}" ]; then
+            sed -i "s/${DB_HOST}/localhost/" "${WPCFG}"
+            sed -i "s/[\'\"]DB_NAME[\'\"],[ ]+[\'\"].+[\'\"]/\'DB_NAME\', \'${DB_NAME}\'/" "${WPCFG}"
+            sed -i "s/[\'\"]DB_USER[\'\"],[ ]+[\'\"].+[\'\"]/\'DB_USER\', \'${DB_USER}\'/" "${WPCFG}"
+            sed -i "s/[\'\"]DB_PASSWORD[\'\"],[ ]+[\'\"].+[\'\"]/\'DB_PASSWORD\', \'${DB_PASSWORD}\'/" "${WPCFG}"
         fi
     fi
 } #}}}
