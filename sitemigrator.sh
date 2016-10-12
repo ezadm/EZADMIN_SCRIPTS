@@ -307,9 +307,12 @@ update_cms_config() #{{{
     if [ "$CMS" == "wordpress" ]; then
         if [ -e "${WPCFG}" ]; then
             sed -ri "s/${DB_HOST}/localhost/" "${WPCFG}"
-            sed -ri "s/[\'\"]DB_NAME[\'\"],[ ]*[\'\"].*[\'\"]/\'DB_NAME\', \'${DB_NAME}\'/" "${WPCFG}"
-            sed -ri "s/[\'\"]DB_USER[\'\"],[ ]*[\'\"].*[\'\"]/\'DB_USER\', \'${DB_USER}\'/" "${WPCFG}"
-            sed -ri "s/[\'\"]DB_PASSWORD[\'\"],[ ]*[\'\"].*[\'\"]/\'DB_PASSWORD\', \'${DB_PASSWORD}\'/" "${WPCFG}"
+            ESCAPED_DB_NAME=`echo "${DB_NAME}" | sed -e 's/[\/&]/\\&/g'`
+            sed -ri "s/[\'\"]DB_NAME[\'\"],[ ]*[\'\"].*[\'\"]/\'DB_NAME\', \'${ESCAPED_DB_NAME}\'/" "${WPCFG}"
+            ESCAPED_DB_USER=`echo "${DB_USER}" | sed -e 's/[\/&]/\\&/g'`
+            sed -ri "s/[\'\"]DB_USER[\'\"],[ ]*[\'\"].*[\'\"]/\'DB_USER\', \'${ESCAPED_DB_USER}\'/" "${WPCFG}"
+            ESCAPED_DB_PASS=`echo "${DB_PASS}" | sed -e 's/[\/&]/\\&/g'`
+            sed -ri "s/[\'\"]DB_PASSWORD[\'\"],[ ]*[\'\"].*[\'\"]/\'DB_PASSWORD\', \'${ESCAPED_DB_PASS}\'/" "${WPCFG}"
         fi
     fi
 } #}}}
