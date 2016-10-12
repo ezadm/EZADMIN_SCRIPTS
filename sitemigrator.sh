@@ -360,7 +360,7 @@ while true; do
     -r | --drupal-config-path ) export DRUPALCFG="$2" ; shift; shift ;;
     -o | --opencart-config-path ) export OPENCARTCFG="$2" ; shift; shift ;;
     -s | --import-sql-file ) export SQLFILE="$2" ; shift; shift ;;
-    --mysql-host ) export DB_HOST="$2" ; shift; shift ;;
+    --mysql-db-host ) export DB_HOST="$2" ; shift; shift ;;
     --mysql-db-name ) export DB_NAME="$2" ; shift; shift ;;
     --mysql-db-user ) export DB_USER="$2" ; shift; shift ;;
     --mysql-db-pass ) export DB_PASSWORD="$2" ; shift; shift ;;
