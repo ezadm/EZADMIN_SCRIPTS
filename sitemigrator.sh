@@ -198,21 +198,21 @@ identify_site_cms() #{{{
         export OPENCARTPATH="${SITEDEST}${OPENCARTCFG}"
     fi
 
-    echo $WPPATH
-    echo $MAGENTOPATH
-    echo $JOOMLAPATH
-    echo $DRUPALPATH
-    echo $OPENCARTPATH
+    echo "$WPPATH"
+    echo "$MAGENTOPATH"
+    echo "$JOOMLAPATH"
+    echo "$DRUPALPATH"
+    echo "$OPENCARTPATH"
 
-	if [ -f $WPPATH ]; then
+	if [ -f "$WPPATH" ]; then
 	    export CMS="wordpress"
-    elif [ -f $MAGENTOPATH ]; then
+    elif [ -f "$MAGENTOPATH" ]; then
         export CMS="magento"
-    elif [ -f $JOOMLAPATH ]; then
+    elif [ -f "$JOOMLAPATH" ]; then
         export CMS="joomla"
-    elif [ -f $DRUPALPATH ]; then
+    elif [ -f "$DRUPALPATH" ]; then
         export CMS="drupal"
-    elif [ -f $OPENCARTPATH ]; then
+    elif [ -f "$OPENCARTPATH" ]; then
         export CMS="opencart"
     fi
     echo "Detected $CMS content management system."
@@ -221,13 +221,15 @@ identify_site_cms() #{{{
 # parse site config file
 parse_site_cms_config() #{{{
 {
-    if [ "$CMS" == "wordpress" ]; then
-		if [ -e $WPPATH ]; then
-			export DB_HOST=`grep 'DB_HOST' $WPPATH  | cut -d"'" -f4`;
-			export DB_NAME=`grep 'DB_NAME' $WPPATH  | cut -d"'" -f4`;
-			export DB_USER=`grep 'DB_USER' $WPPATH  | cut -d"'" -f4`;
-			export DB_PASSWORD=`grep 'DB_PASSWORD' $WPPATH  | cut -d"'" -f4`;
-		fi
+    if [ "$DB_HOST" == "false" ]; then
+        if [ "$CMS" == "wordpress" ]; then
+            if [ -e "$WPPATH" ]; then
+                export DB_HOST=`grep 'DB_HOST' "$WPPATH"  | cut -d"'" -f4`;
+                export DB_NAME=`grep 'DB_NAME' "$WPPATH"  | cut -d"'" -f4`;
+                export DB_USER=`grep 'DB_USER' "$WPPATH"  | cut -d"'" -f4`;
+                export DB_PASSWORD=`grep 'DB_PASSWORD' "$WPPATH"  | cut -d"'" -f4`;
+            fi
+        fi
     fi
 } #}}}
 
@@ -235,19 +237,19 @@ parse_site_cms_config() #{{{
 verify_db_credentials() #{{{
 {
     GOTDBDETAILS=true
-    if [ -z ${DB_HOST+x} ]; then
+    if [ "$DB_HOST" == "false" ]; then
         ezadmin_message_error "Unable to migrate database as migrator was unable to detect database host and it was not specified as a command line argument."
         GOTDBDETAILS=false
     fi
-    if [ -z ${DB_NAME+x} ]; then
+    if [ "${DB_NAME}" == "false" ]; then
         ezadmin_message_error "Unable to migrate database as migrator was unable to detect the database name and it  was not specified as a command line argument."
         GOTDBDETAILS=false
     fi
-    if [ -z ${DB_USER+x} ]; then
+    if [ "${DB_USER}" == "false" ]; then
         ezadmin_message_error "Unable to migrate database as migrator was unable to detect the database user and it was not specified as a command line argument."
         GOTDBDETAILS=false
     fi
-    if [ -z ${DB_PASSWORD+x} ]; then
+    if [ "${DB_PASSWORD}" == "false" ]; then
         ezadmin_message_error "Unable to migrate database as migrator was unable to detect the database password and the host was not specified as a command line argument."
         GOTDBDETAILS=false
     fi
@@ -260,7 +262,10 @@ verify_db_credentials() #{{{
 create_site_database() #{{{
 {
     if [ "$EZADMIN_CTRLPANEL" == "plesk" ]; then
-        plesk bin database --create $DB_NAME -domain $DOMAIN -type mysql
+        CREATE_DB_CMD="plesk bin database --create $DB_NAME -domain $DOMAIN -type mysql"
+        ezadmin_message "Creating database $DB_NAME for plesk domain $DOMAIN"
+        ezadmin_message "$CREATE_DB_CMD "
+        eval "$CREATE_DB_CMD"
     elif  [ "$EZADMIN_CTRLPANEL" == "cpanel" ]; then
         export MYSQLPASS=`cat /root/.my.cnf | grep 'password' | cut -d'"' -f 2`
         mysql -u root -p"${MYSQLPASS}" -e "CREATE DATABASE ${DB_NAME};"
@@ -271,7 +276,10 @@ create_site_database() #{{{
 create_site_database_user() #{{{
 {
     if [ "$EZADMIN_CTRLPANEL" == "plesk" ]; then
-        plesk bin database --create-dbuser $DB_USER -passwd $DB_PASSWORD -domain $DOMAIN -database $DB_NAME -type mysql
+        CREATE_DB_USER_CMD="plesk bin database --create-dbuser $DB_USER -passwd $DB_PASSWORD -domain $DOMAIN -database $DB_NAME -type mysql"
+        ezadmin_message "Creating user $DB_USER for $DB_NAME for plesk domain $DOMAIN"
+        ezadmin_message "$CREATE_DB_USER_CMD"
+        eval "$CREATE_DB_USER_CMD"
     elif [ "$EZADMIN_CTRLPANEL" == "cpanel" ]; then
         mysql -u root -p"${MYSQLPASS}" -e "CREATE USER '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PASSWORD}'"
         /usr/local/cpanel/bin/dbmaptool ${DOMACCOUNT} --type 'mysql' --dbs "${DB_NAME}" --dbusers "${DB_USER}"
@@ -328,6 +336,10 @@ export SRCHOST=false
 export SRCPORT=false
 export DOMAIN=false
 export DEBUG=false
+export DB_HOST=false
+export DB_NAME=false
+export DB_USER=false
+export DB_PASSWORD=false
 
 while true; do
   case "$1" in
@@ -347,6 +359,11 @@ while true; do
     -j | --joomla-config-path ) export JOOMLACFG="$2" ; shift; shift ;;
     -r | --drupal-config-path ) export DRUPALCFG="$2" ; shift; shift ;;
     -o | --opencart-config-path ) export OPENCARTCFG="$2" ; shift; shift ;;
+    -s | --import-sql-file ) export SQLFILE="$2" ; shift; shift ;;
+    --mysql-host ) export DB_HOST="$2" ; shift; shift ;;
+    --mysql-db-name ) export DB_NAME="$2" ; shift; shift ;;
+    --mysql-db-user ) export DB_USER="$2" ; shift; shift ;;
+    --mysql-db-pass ) export DB_PASSWORD="$2" ; shift; shift ;;
     -- ) shift; break ;;
     * ) break ;;
   esac
