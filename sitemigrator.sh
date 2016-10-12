@@ -175,8 +175,6 @@ identify_site_cms() #{{{
 
     export CMS="unknown"
 
-    echo $
-
     if [ "$WPCFG" != "false" ]; then
         export WPPATH="${SITEDEST}${WPCFG}"
         echo "WPPATH: $WPPATH"
@@ -262,10 +260,10 @@ verify_db_credentials() #{{{
 create_site_database() #{{{
 {
     if [ "$EZADMIN_CTRLPANEL" == "plesk" ]; then
-        CREATE_DB_CMD="plesk bin database --create $DB_NAME -domain $DOMAIN -type mysql"
+        CREATE_DB_CMD="plesk bin database --create $DB_NAME -domain $DOMAIN -type mysql ; true"
         ezadmin_message "Creating database $DB_NAME for plesk domain $DOMAIN"
-        ezadmin_message "$CREATE_DB_CMD "
-        eval "$CREATE_DB_CMD"
+        ezadmin_message "$CREATE_DB_CMD"
+        eval "$CREATE_DB_CMD" || true
     elif  [ "$EZADMIN_CTRLPANEL" == "cpanel" ]; then
         export MYSQLPASS=`cat /root/.my.cnf | grep 'password' | cut -d'"' -f 2`
         mysql -u root -p"${MYSQLPASS}" -e "CREATE DATABASE ${DB_NAME};"
