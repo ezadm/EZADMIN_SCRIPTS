@@ -283,8 +283,8 @@ create_site_database() #{{{
 create_site_database_user() #{{{
 {
     if [ "$EZADMIN_CTRLPANEL" == "plesk" ]; then
-        CREATE_DB_USER_CMD="plesk bin database --create-dbuser $DB_USER -passwd $DB_PASSWORD -domain $DOMAIN -database $DB_NAME -type mysql"
-        ezadmin_message "Creating user $DB_USER for $DB_NAME for plesk domain $DOMAIN"
+        CREATE_DB_USER_CMD="plesk bin database --create-dbuser \"$DB_USER\" -passwd \"$DB_PASSWORD\" -domain \"$DOMAIN\" -database \"$DB_NAME\" -type mysql"
+        ezadmin_message "Creating user \"$DB_USER\" for \"$DB_NAME\" for plesk domain \"$DOMAIN\""
         ezadmin_message "$CREATE_DB_USER_CMD"
         eval "$CREATE_DB_USER_CMD"
     elif [ "$EZADMIN_CTRLPANEL" == "cpanel" ]; then
