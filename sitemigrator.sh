@@ -147,7 +147,7 @@ migrate_files() #{{{
         # else
         # else fallback to tarsync
     else
-        wget -r --user="$SRCUSER" --password="$SRCPASS" ftp://$SRCHOST:$SRCPORT/
+        wget -m --user="$SRCUSER" --password="$SRCPASS" ftp://$SRCHOST:$SRCPORT/
     fi
 } #}}}
 
