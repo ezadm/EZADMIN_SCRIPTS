@@ -305,7 +305,7 @@ grant_database_permissions() #{{{
 # migrate database
 migrate_database() #{{{
 {
-    mysqldump -h ${DB_HOST} -u $DB_USER -p${DB_PASSWORD} ${DB_NAME} | mysql -u "${DB_USER}" -p${DB_PASSWORD} ${DB_NAME}
+    mysqldump -h ${DB_HOST} -u $DB_USER -p`echo "${DB_PASSWORD}" | sed 's/\\\&/\&/g'` ${DB_NAME} | mysql -u "${DB_USER}" -p`echo "${DB_PASSWORD}" | sed 's/\\\&/\&/g'` ${DB_NAME}
 } #}}}
 
 # update cms config file
