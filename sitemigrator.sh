@@ -256,6 +256,15 @@ verify_db_credentials() #{{{
     fi
 } #}}}
 
+escape_database_details() #{{{
+{
+    export DB_HOST=`echo "${DB_HOST}" | sed 's/[\/&]/\\\\&/g'`
+    export DB_NAME=`echo "${DB_NAME}" | sed 's/[\/&]/\\\\&/g'`
+    export DB_USER=`echo "${DB_USER}" | sed 's/[\/&]/\\\\&/g'`
+    export DB_PASSWORD=`echo "${DB_PASSWORD}" | sed 's/[\/&]/\\\\&/g'`
+}
+#}}}
+
 # create database
 create_site_database() #{{{
 {
@@ -305,12 +314,9 @@ update_cms_config() #{{{
     if [ "$CMS" == "wordpress" ]; then
         if [ -e "${WPCFG}" ]; then
             sed -ri "s/${DB_HOST}/localhost/" "${WPCFG}"
-            ESCAPED_DB_NAME=`echo "${DB_NAME}" | sed -e 's/[\/&]/\\\\&/g'`
-            sed -ri "s/[\'\"]DB_NAME[\'\"],[ ]*[\'\"].*[\'\"]/\'DB_NAME\', \'${ESCAPED_DB_NAME}\'/" "${WPCFG}"
-            ESCAPED_DB_USER=`echo "${DB_USER}" | sed -e 's/[\/&]/\\\\&/g'`
-            sed -ri "s/[\'\"]DB_USER[\'\"],[ ]*[\'\"].*[\'\"]/\'DB_USER\', \'${ESCAPED_DB_USER}\'/" "${WPCFG}"
-            ESCAPED_DB_PASS=`echo "${DB_PASS}" | sed -e 's/[\/&]/\\\\&/g'`
-            sed -ri "s/[\'\"]DB_PASSWORD[\'\"],[ ]*[\'\"].*[\'\"]/\'DB_PASSWORD\', \'${ESCAPED_DB_PASS}\'/" "${WPCFG}"
+            sed -ri "s/[\'\"]DB_NAME[\'\"],[ ]*[\'\"].*[\'\"]/\'DB_NAME\', \'${DB_NAME}\'/" "${WPCFG}"
+            sed -ri "s/[\'\"]DB_USER[\'\"],[ ]*[\'\"].*[\'\"]/\'DB_USER\', \'${DB_USER}\'/" "${WPCFG}"
+            sed -ri "s/[\'\"]DB_PASSWORD[\'\"],[ ]*[\'\"].*[\'\"]/\'DB_PASSWORD\', \'${DB_PASS}\'/" "${WPCFG}"
         fi
     fi
 } #}}}
@@ -406,6 +412,8 @@ identify_site_cms
 parse_site_cms_config
 
 if [ "$DBMIG" == "true" ]; then
+    escape_database_details
+
     verify_db_credentials
 
     create_site_database
