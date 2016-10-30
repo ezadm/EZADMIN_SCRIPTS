@@ -34,15 +34,22 @@ validate_input() #{{{
         display_usage
         ezadmin_message_error "Unable to proceed as you failed to specify the mandatory options listed below:"
         if [ "$VALID_USER" == "false" ]; then
-            ezadmin_message_error "Missing domain"
+            ezadmin_message_error "Missing user"
         fi
         if [ "$VALID_HOST" == "false" ]; then
             ezadmin_message_error "Missing host"
         fi
-        if [ "$VALID_USER" == "false" ]; then
-            ezadmin_message_error "Missing user"
+        if [ "$VALID_PORT" == "false" ]; then
+            ezadmin_message_error "Missing port"
         fi
-        exit
+
+        if [ "$VALID_DOMAIN" == "false" ]; then
+            ezadmin_message_error "Missing domain"
+        fi
+
+        if [ '$1' != 'testmode' ]; then
+            exit
+        fi
     fi
 
 } #}}}
