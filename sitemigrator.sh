@@ -20,6 +20,12 @@ ezadmin_include 'https://raw.githubusercontent.com/demon012/EZADMIN_SCRIPTS/mast
 
 ezadmin_include 'https://raw.githubusercontent.com/demon012/EZADMIN_SCRIPTS/master/includes/sitemigrator.sh'
 
+WPCFG="false"
+MAGENTOCFG="false"
+JOOMLACFG="false"
+DRUPALCFG="false"
+OPENCARTCFG="false"
+
 while true; do
   case "$1" in
     -h | --help ) export HELP=true ; shift ;;
