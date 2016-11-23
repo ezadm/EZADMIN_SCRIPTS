@@ -34,17 +34,18 @@ validate_input() #{{{
         display_usage
         ezadmin_message_error "Unable to proceed as you failed to specify the mandatory options listed below:"
         if [ "$VALID_USER" == "false" ]; then
-            ezadmin_message_error "Missing user"
+            # ezadmin_message_error "Missing user"
+            echo "Missing user"
         fi
         if [ "$VALID_HOST" == "false" ]; then
-            ezadmin_message_error "Missing host"
+            echo "Missing host"
         fi
         if [ "$VALID_PORT" == "false" ]; then
-            ezadmin_message_error "Missing port"
+            echo "Missing port"
         fi
 
         if [ "$VALID_DOMAIN" == "false" ]; then
-            ezadmin_message_error "Missing domain"
+            echo "Missing domain"
         fi
 
         if [ '$1' != 'testmode' ]; then
@@ -164,6 +165,7 @@ identify_site_cms() #{{{
     export CMS="unknown"
 
     if [ "$WPCFG" != "false" ]; then
+        echo "WPCFG != false triggered as true"
         export WPPATH="${SITEDEST}${WPCFG}"
         echo "WPPATH: $WPPATH"
     fi
