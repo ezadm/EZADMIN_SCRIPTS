@@ -125,7 +125,8 @@ migrate_files() #{{{
         mkdir -p $ALLDEST
         cd $ALLDEST
 
-        ssh -p $SRCPORT $SRCUSER@$SRCHOST 'tar cvpj .' | tar xvpj
+        # ssh -p $SRCPORT $SRCUSER@$SRCHOST 'tar cvpj .' | tar xvpj
+        rsync -avz -e "ssh -p $SRCPORT" $SRCUSER@$SRCHOST: .
         shopt -s dotglob nullglob
         cp -a $ALLDEST/htdocs/* $SITEDEST
         # check if rsync is available
