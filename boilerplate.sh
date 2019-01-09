@@ -176,7 +176,7 @@ ezadmin_detect_distro() #{{{
             export EZADMIN_VERSION_ID='rolling-release'
             export EZADMIN_PRETTY_NAME="Arch Linux"
             echo $EZADMIN_VERSION_ID
-        elif [ grep -i 'centos' /etc/redhat-release &> /dev/null ]; then
+        elif grep -qi 'centos' /etc/redhat-release; then
             export EZADMIN_OS='Linux'
             export EZADMIN_ID='centos'
             export EZADMIN_VERSION_ID=`awk '{ print $3; }' /etc/redhat-release`
@@ -210,8 +210,10 @@ ezadmin_display_distro() #{{{
 ezadmin_init() #{{{
 {
     init_colours
-    show_ezadmin_header
     ezadmin_detect_distro
+    ezadmin_detect_control_panel
+
+    export EZADMIN_SERVER_IPS=$( ip addr | grep -Eo 'inet [0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -v '127.0.0.1' | cut -d' ' -f2 )
 
     if [ "$EZADMIN_ID" == "debian" ] || [ "$EZADMIN_ID" == "ubuntu" ]; then
         export EZADMIN_PKG_INSTALL="apt-get install -y"
@@ -235,8 +237,16 @@ ezadmin_user_check_backups() #{{{
         exit
     fi
 } #}}}
+ezadmin_detect_control_panel() #{{{
+{
+    export EZADMIN_CTRLPANEL="unknown"
+
+    if [ -x /usr/sbin/plesk ]; then
+        export EZADMIN_CTRLPANEL="plesk"
+    elif [ -x /usr/bin/cpanel ]; then
+        export EZADMIN_CTRLPANEL="cpanel"
+    fi
+} #}}}
 
 clear
 ezadmin_init
-ezadmin_display_distro
-ezadmin_user_check_backups
