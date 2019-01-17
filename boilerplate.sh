@@ -9,7 +9,7 @@ init_colours() { #{{{
         COLOUR_FG_NC="\e[39m"
         COLOUR_FG_BLACK="\e[30m"
         COLOUR_FG_RED="\e[31m"
-        COLOUR_FG_GREEN="\e[32mG"
+        COLOUR_FG_GREEN="\e[32m"
         COLOUR_FG_YELLOW="\e[33m"
         COLOUR_FG_BLUE="\e[34m"
         COLOUR_FG_MAGENTA="\e[35m"
